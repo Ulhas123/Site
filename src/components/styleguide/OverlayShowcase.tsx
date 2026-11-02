@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Layers } from 'lucide-react'
 import { useApplyPrefs, useHotkeys } from '../../hooks'
-import { type ActivePanel, useEngagement, useUI } from '../../store'
+import { type ActivePanel, useUI } from '../../store'
 import { Drawer, Modal } from '../ui'
 import { GestureCanvasDemo } from './GestureCanvasDemo'
 import { OverlayCards } from './OverlayCards'
@@ -17,7 +17,6 @@ export function OverlayShowcase() {
     return false
   })
   const [lastHotkey, setLastHotkey] = useState<string>('None')
-  const { wallet, addCoins } = useEngagement()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -120,40 +119,34 @@ export function OverlayShowcase() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Spirit Wallet & Unlock Chapter"
+        title="Personal Reader Shortcuts & Tips"
         description="Centered Modal primitive with focus trap, Esc, and scroll lock."
         footer={
-          <>
+          <div className="flex justify-end">
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className="px-4 py-2 rounded-lg border border-line bg-raised text-ink text-xs font-semibold hover:bg-page cursor-pointer"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                addCoins(50)
-                setIsModalOpen(false)
-              }}
               className="px-4 py-2 rounded-lg bg-system text-white text-xs font-bold hover:bg-system/90 cursor-pointer shadow-xs"
             >
-              Recharge +50 Coins
+              Got It
             </button>
-          </>
+          </div>
         }
       >
         <div className="space-y-3 text-xs text-ink">
-          <p className="text-muted">Unlock advanced chapters using Spirit Coins or Fast Passes.</p>
+          <p className="text-muted">Quick navigation and reading shortcuts:</p>
           <div className="p-4 rounded-xl border border-line bg-raised space-y-2">
             <div className="flex justify-between">
-              <span className="text-muted">Current Balance:</span>
-              <span className="font-mono font-bold text-system">{wallet.coins} Coins</span>
+              <span className="text-muted">Center Tap (30-70% width):</span>
+              <span className="font-mono font-bold text-system">Toggle Chrome</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted">Fast Passes:</span>
-              <span className="font-mono font-bold text-ink">{wallet.fastPass} FP</span>
+              <span className="text-muted">Scroll Down (&gt;60px):</span>
+              <span className="font-mono font-bold text-ink">Hide Header</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted">Scroll Up (&gt;8px):</span>
+              <span className="font-mono font-bold text-ink">Show Header</span>
             </div>
           </div>
         </div>

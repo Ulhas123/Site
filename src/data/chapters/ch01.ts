@@ -8,8 +8,6 @@ export const chapter01: Chapter = {
   publishedAt: '2026-01-01T12:00:00.000Z',
   translator: 'AetherTranslations',
   editor: 'RuneEditor',
-  isLocked: false,
-  cost: { coins: 0 },
   authorThoughts:
     'Welcome to The Shattered Reach! Valen begins his journey with nothing but a glitched trait and quick wits. Hope you enjoy the ride!',
   blocks: [

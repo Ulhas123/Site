@@ -45,8 +45,6 @@ export type Block =
   | AuthorNoteBlock
   | SceneBreakBlock;
 
-export type ChapterCost = { coins: number } | { fastPass: number };
-
 export interface Chapter {
   id: string;
   number: number;
@@ -55,8 +53,6 @@ export interface Chapter {
   publishedAt: string;
   translator: string;
   editor: string;
-  isLocked: boolean;
-  cost: ChapterCost;
   blocks: Block[];
   authorThoughts?: string;
 }

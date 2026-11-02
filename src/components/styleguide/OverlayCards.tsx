@@ -1,6 +1,6 @@
 import type { ReaderFontFamily, ReaderMaxWidth, ReadingMode } from '../../store'
 import { useEngagement, usePrefs, useProgress, useUI } from '../../store'
-import { Bookmark, Coins, Compass, Keyboard, RotateCcw, Settings } from 'lucide-react'
+import { Bookmark, Compass, HelpCircle, Keyboard, RotateCcw, Settings } from 'lucide-react'
 
 export interface OverlayCardsProps {
   lastHotkey: string
@@ -10,7 +10,7 @@ export interface OverlayCardsProps {
 export function OverlayCards({ lastHotkey, onOpenModal }: OverlayCardsProps) {
   const prefs = usePrefs()
   const { openPanel } = useUI()
-  const { wallet, addCoins } = useEngagement()
+  const { likedIds, toggleLike } = useEngagement()
   const { saveProgress, getProgress } = useProgress()
 
   return (
@@ -147,7 +147,7 @@ export function OverlayCards({ lastHotkey, onOpenModal }: OverlayCardsProps) {
               onClick={onOpenModal}
               className="p-2 rounded-lg border border-line bg-raised hover:bg-page hover:border-system text-ink font-medium text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-system"
             >
-              <Coins className="w-3.5 h-3.5 text-system" />
+              <HelpCircle className="w-3.5 h-3.5 text-system" />
               Modal [M]
             </button>
           </div>
@@ -175,19 +175,19 @@ export function OverlayCards({ lastHotkey, onOpenModal }: OverlayCardsProps) {
 
         <div className="space-y-2 text-xs">
           <div className="flex justify-between p-2 rounded-lg border border-line bg-raised">
-            <span className="text-muted">Wallet:</span>
+            <span className="text-muted">Likes & Bookmarks:</span>
             <span className="font-mono text-ink font-bold">
-              {wallet.coins} coins • {wallet.fastPass} FP
+              {likedIds.length} liked
             </span>
           </div>
 
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={() => addCoins(10)}
+              onClick={() => toggleLike('sample-item')}
               className="flex-1 py-1.5 px-2 rounded-lg border border-line bg-raised hover:bg-page text-ink text-xs font-medium cursor-pointer transition-colors"
             >
-              +10 Coins
+              Toggle Like
             </button>
             <button
               type="button"

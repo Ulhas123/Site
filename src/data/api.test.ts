@@ -74,25 +74,14 @@ describe('Novel Content & Types', () => {
     }
   });
 
-  it('validates 1,200 generated chapter metadata entries and locking rules', () => {
+  it('validates 1,200 generated chapter metadata entries for personal reader', () => {
     expect(defaultNovel.chapters).toHaveLength(1200);
 
-    // Chapters 1-3 are real and unlocked
-    for (let i = 0; i < 3; i++) {
+    // All chapters are accessible without paywalls
+    for (let i = 0; i < 10; i++) {
       const ch = defaultNovel.chapters[i];
       expect(ch.number).toBe(i + 1);
-      expect(ch.isLocked).toBe(false);
-      expect(ch.cost).toEqual({ coins: 0 });
-    }
-
-    // Chapters 5+ are locked
-    for (let i = 4; i < defaultNovel.chapters.length; i++) {
-      const ch = defaultNovel.chapters[i];
-      expect(ch.number).toBe(i + 1);
-      expect(ch.isLocked).toBe(true);
-      expect(ch.cost).toBeDefined();
-      const hasCoinsOrFastPass = 'coins' in ch.cost || 'fastPass' in ch.cost;
-      expect(hasCoinsOrFastPass).toBe(true);
+      expect(ch.title).toBeTruthy();
     }
 
     // Cover is inline SVG data URI with no network dependency

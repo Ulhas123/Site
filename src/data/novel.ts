@@ -56,8 +56,6 @@ const generateChapters = (): ChapterMeta[] => {
     publishedAt: chapter01.publishedAt,
     translator: chapter01.translator,
     editor: chapter01.editor,
-    isLocked: chapter01.isLocked,
-    cost: chapter01.cost,
     authorThoughts: chapter01.authorThoughts,
   });
 
@@ -70,8 +68,6 @@ const generateChapters = (): ChapterMeta[] => {
     publishedAt: new Date(baseTime + dayMs).toISOString(),
     translator: 'AetherTranslations',
     editor: 'RuneEditor',
-    isLocked: false,
-    cost: { coins: 0 },
     authorThoughts: 'Valen tests his limits in the wilderness.',
   });
 
@@ -84,8 +80,6 @@ const generateChapters = (): ChapterMeta[] => {
     publishedAt: new Date(baseTime + 2 * dayMs).toISOString(),
     translator: 'AetherTranslations',
     editor: 'RuneEditor',
-    isLocked: false,
-    cost: { coins: 0 },
     authorThoughts: 'The lore deepens as Valen discovers ancient ruins.',
   });
 
@@ -98,18 +92,15 @@ const generateChapters = (): ChapterMeta[] => {
     publishedAt: new Date(baseTime + 3 * dayMs).toISOString(),
     translator: 'AetherTranslations',
     editor: 'RuneEditor',
-    isLocked: false,
-    cost: { coins: 0 },
   });
 
-  // Chapters 5 to 1200: Locked chapters to stress the TOC
+  // Chapters 5 to 1200: Generated chapters for TOC
   for (let i = 5; i <= 1200; i++) {
     const titleBase = CHAPTER_TITLES[(i - 5) % CHAPTER_TITLES.length];
     const cycle = Math.floor((i - 5) / CHAPTER_TITLES.length) + 1;
     const title = cycle > 1 ? `Chapter ${i}: ${titleBase} Part ${cycle}` : `Chapter ${i}: ${titleBase}`;
     const wordCount = 1400 + ((i * 37) % 800);
     const publishedAt = new Date(baseTime + (i - 1) * dayMs).toISOString();
-    const cost = i % 3 === 0 ? { fastPass: 1 } : { coins: 15 };
 
     chapters.push({
       id: `chapter-${i}`,
@@ -119,8 +110,6 @@ const generateChapters = (): ChapterMeta[] => {
       publishedAt,
       translator: 'AetherTranslations',
       editor: 'RuneEditor',
-      isLocked: true,
-      cost,
     });
   }
 
