@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ContrastTable } from '../components/styleguide/ContrastTable'
+import { OverlayShowcase } from '../components/styleguide/OverlayShowcase'
 import { ThemeCard } from '../components/styleguide/ThemeCard'
 import { TypeSpecimens } from '../components/styleguide/TypeSpecimens'
 import { THEMES, THEME_NAMES, type ThemeName } from '../theme/tokens'
@@ -133,6 +134,9 @@ export function StyleguidePage() {
             </article>
           </div>
         </section>
+
+        {/* Section 5: State, Overlays & Gesture Architecture */}
+        <OverlayShowcase />
       </main>
     </div>
   )

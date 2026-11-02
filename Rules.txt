@@ -8,3 +8,4 @@ Stack: Vite + React 19 + TypeScript (strict) + Tailwind v4 + Zustand + Lucide + 
 6. Stay inside the current prompt's scope. No drive-by refactors. Keep files under 250 lines.
 7. Finish every task with: tsc + lint + build clean, then browser-check at 390x844, 768x1024, 1440x900, attach screenshots, and list any deviations honestly. Never claim "pixel-perfect" without a reference comparison.
 8. Don't read or analyse plans that are not in this folder itself. Don't take reference from similar projects and their plans that are stored locally.
+9. After building as defined in the prompt show the demo.
