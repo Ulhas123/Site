@@ -1,0 +1,95 @@
+/* ==========================================================================
+   Design Tokens & Semantic Theme Foundation
+   (All raw theme values live exclusively in this single file)
+   ========================================================================== */
+
+:root {
+  /* Reader defaults */
+  --reader-font: 'Lora Variable', serif;
+  --reader-size: 1.125rem;
+  --reader-leading: 1.75;
+  --reader-gap: 1.5rem;
+  --reader-width: 42rem;
+
+  /* Default theme: dark */
+  --outer: #121214;
+  --page: #1A1A1D;
+  --raised: #242429;
+  --ink: #D4D4D8;
+  --muted: #8E8E93;
+  --line: #2C2C32;
+  --accent: #FF6B00;
+  --accent-ink: #FF6B00;
+  --accent-text: #FF6B00;
+  --system: #3B66F5;
+}
+
+[data-theme="dark"] {
+  --outer: #121214;
+  --page: #1A1A1D;
+  --raised: #242429;
+  --ink: #D4D4D8;
+  --muted: #8E8E93;
+  --line: #2C2C32;
+  --accent: #FF6B00;
+  --accent-ink: #FF6B00;
+  --accent-text: #FF6B00;
+  --system: #3B66F5;
+}
+
+[data-theme="sepia"] {
+  --outer: #E6DEC8;
+  --page: #F4ECD8;
+  --raised: #EAE0C8;
+  --ink: #3C3022;
+  --muted: #7A6855;
+  --line: #DFD3B9;
+  --accent: #FF6B00;
+  --accent-ink: #9C3D00;
+  --accent-text: #9C3D00;
+  --system: #3B66F5;
+}
+
+[data-theme="midnight"] {
+  --outer: #000000;
+  --page: #09090B;
+  --raised: #141417;
+  --ink: #A1A1AA;
+  --muted: #71717A;
+  --line: #1F1F23;
+  --accent: #FF6B00;
+  --accent-ink: #FF6B00;
+  --accent-text: #FF6B00;
+  --system: #3B66F5;
+}
+
+[data-theme="light"] {
+  --outer: #F2F3F5;
+  --page: #FFFFFF;
+  --raised: #F8F9FA;
+  --ink: #1F2329;
+  --muted: #646A73;
+  --line: #E5E6EB;
+  --accent: #FF6B00;
+  --accent-ink: #C2410C;
+  --accent-text: #C2410C;
+  --system: #3B66F5;
+}
+
+@theme inline {
+  --color-outer: var(--outer);
+  --color-page: var(--page);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-text: var(--accent-text);
+  --color-system: var(--system);
+
+  --font-inter: 'Inter Variable', sans-serif;
+  --font-lora: 'Lora Variable', serif;
+  --font-merriweather: 'Merriweather Variable', serif;
+  --font-mono: 'JetBrains Mono Variable', monospace;
+}
