@@ -106,7 +106,7 @@ export function OverlayShowcase() {
                 <button
                   type="button"
                   data-interactive="read-btn"
-                  className="px-2 py-1 rounded border border-line bg-page text-xs text-ink hover:border-accent cursor-pointer"
+                  className="px-2 py-1 rounded border border-line bg-page text-xs text-ink hover:border-system cursor-pointer"
                 >
                   Read
                 </button>
@@ -137,7 +137,7 @@ export function OverlayShowcase() {
                 addCoins(50)
                 setIsModalOpen(false)
               }}
-              className="px-4 py-2 rounded-lg bg-accent text-accent-ink text-xs font-bold hover:opacity-90 cursor-pointer"
+              className="px-4 py-2 rounded-lg bg-system text-white text-xs font-bold hover:bg-system/90 cursor-pointer shadow-xs"
             >
               Recharge +50 Coins
             </button>
@@ -149,7 +149,7 @@ export function OverlayShowcase() {
           <div className="p-4 rounded-xl border border-line bg-raised space-y-2">
             <div className="flex justify-between">
               <span className="text-muted">Current Balance:</span>
-              <span className="font-mono font-bold text-accent">{wallet.coins} Coins</span>
+              <span className="font-mono font-bold text-system">{wallet.coins} Coins</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted">Fast Passes:</span>

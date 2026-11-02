@@ -42,7 +42,7 @@ export function GestureCanvasDemo() {
         </div>
       </div>
 
-      <div className="px-3 py-1.5 rounded-lg border border-line bg-raised text-xs font-mono text-accent truncate">
+      <div className="px-3 py-1.5 rounded-lg border border-line bg-raised text-xs font-mono text-system truncate">
         {gestureFeedback}
       </div>
 
@@ -87,10 +87,10 @@ export function GestureCanvasDemo() {
                 openPanel('comments')
                 setGestureFeedback('Interactive comment badge clicked! Opened comments.')
               }}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-line bg-raised hover:bg-page hover:border-accent text-ink text-xs font-medium cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-system"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-line bg-raised hover:bg-page hover:border-system text-ink text-xs font-medium cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-system"
               aria-label="View 14 comments"
             >
-              <MessageSquare className="w-3.5 h-3.5 text-accent" />
+              <MessageSquare className="w-3.5 h-3.5 text-system" />
               <span>14</span>
             </button>
           </div>

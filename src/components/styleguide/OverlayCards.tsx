@@ -45,10 +45,10 @@ export function OverlayCards({ lastHotkey, onOpenModal }: OverlayCardsProps) {
                   key={sz}
                   type="button"
                   onClick={() => prefs.setFontSize(sz)}
-                  className={`flex-1 py-1 rounded text-xs font-mono font-medium border border-line transition-colors cursor-pointer ${
+                  className={`flex-1 py-1 rounded text-xs font-mono font-medium border transition-colors cursor-pointer ${
                     prefs.fontSize === sz
-                      ? 'bg-accent text-accent-ink font-bold'
-                      : 'bg-raised text-muted hover:text-ink'
+                      ? 'bg-system text-white font-bold border-system shadow-xs'
+                      : 'bg-raised text-muted hover:text-ink hover:bg-page border-line'
                   }`}
                 >
                   {sz}
@@ -65,10 +65,10 @@ export function OverlayCards({ lastHotkey, onOpenModal }: OverlayCardsProps) {
                   key={f}
                   type="button"
                   onClick={() => prefs.setFontFamily(f)}
-                  className={`py-1 px-2 rounded text-xs capitalize border border-line transition-colors cursor-pointer ${
+                  className={`py-1 px-2 rounded text-xs capitalize border transition-colors cursor-pointer ${
                     prefs.fontFamily === f
-                      ? 'bg-accent text-accent-ink font-bold'
-                      : 'bg-raised text-muted hover:text-ink'
+                      ? 'bg-system text-white font-bold border-system shadow-xs'
+                      : 'bg-raised text-muted hover:text-ink hover:bg-page border-line'
                   }`}
                 >
                   {f}
@@ -86,10 +86,10 @@ export function OverlayCards({ lastHotkey, onOpenModal }: OverlayCardsProps) {
                     key={w}
                     type="button"
                     onClick={() => prefs.setMaxWidth(w)}
-                    className={`flex-1 py-1 rounded text-[11px] font-mono border border-line cursor-pointer ${
+                    className={`flex-1 py-1 rounded text-[11px] font-mono border transition-colors cursor-pointer ${
                       prefs.maxWidth === w
-                        ? 'bg-accent text-accent-ink font-bold'
-                        : 'bg-raised text-muted hover:text-ink'
+                        ? 'bg-system text-white font-bold border-system shadow-xs'
+                        : 'bg-raised text-muted hover:text-ink hover:bg-page border-line'
                     }`}
                   >
                     {w}
@@ -105,10 +105,10 @@ export function OverlayCards({ lastHotkey, onOpenModal }: OverlayCardsProps) {
                     key={m}
                     type="button"
                     onClick={() => prefs.setReadingMode(m)}
-                    className={`py-1 px-2 rounded text-[11px] capitalize border border-line cursor-pointer ${
+                    className={`py-1 px-2 rounded text-[11px] capitalize border transition-colors cursor-pointer ${
                       prefs.readingMode === m
-                        ? 'bg-accent text-accent-ink font-bold'
-                        : 'bg-raised text-muted hover:text-ink'
+                        ? 'bg-system text-white font-bold border-system shadow-xs'
+                        : 'bg-raised text-muted hover:text-ink hover:bg-page border-line'
                     }`}
                   >
                     {m}
@@ -123,31 +123,31 @@ export function OverlayCards({ lastHotkey, onOpenModal }: OverlayCardsProps) {
       {/* Card 2: Hotkeys */}
       <div className="p-5 rounded-2xl border border-line bg-page space-y-4">
         <h3 className="text-sm font-bold text-ink flex items-center gap-2">
-          <Keyboard className="w-4 h-4 text-accent" aria-hidden="true" />
+          <Keyboard className="w-4 h-4 text-system" aria-hidden="true" />
           Hotkeys & Overlays
         </h3>
 
         <div className="space-y-2.5 text-xs">
           <div className="p-2.5 rounded-lg border border-line bg-raised flex items-center justify-between">
             <span className="text-muted">Last Hotkey:</span>
-            <span className="font-mono text-accent font-bold">{lastHotkey}</span>
+            <span className="font-mono text-system font-bold">{lastHotkey}</span>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
               onClick={() => openPanel('toc')}
-              className="p-2 rounded-lg border border-line bg-raised hover:bg-page hover:border-accent text-ink font-medium text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-system"
+              className="p-2 rounded-lg border border-line bg-raised hover:bg-page hover:border-system text-ink font-medium text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-system"
             >
-              <Compass className="w-3.5 h-3.5 text-accent" />
+              <Compass className="w-3.5 h-3.5 text-system" />
               Drawer [T]
             </button>
             <button
               type="button"
               onClick={onOpenModal}
-              className="p-2 rounded-lg border border-line bg-raised hover:bg-page hover:border-accent text-ink font-medium text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-system"
+              className="p-2 rounded-lg border border-line bg-raised hover:bg-page hover:border-system text-ink font-medium text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-system"
             >
-              <Coins className="w-3.5 h-3.5 text-accent" />
+              <Coins className="w-3.5 h-3.5 text-system" />
               Modal [M]
             </button>
           </div>
