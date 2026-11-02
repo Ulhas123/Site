@@ -192,6 +192,30 @@ describe('useEngagement & useUI Stores', () => {
       isSpoiler: false,
     })
     expect(useEngagement.getState().addedComments).toHaveLength(1)
+
+    // Wallet & unlocking
+    expect(useEngagement.getState().wallet.coins).toBe(50)
+    expect(useEngagement.getState().wallet.fastPasses).toBe(3)
+    expect(useEngagement.getState().isChapterUnlocked('chapter-5')).toBe(false)
+
+    // Unlock with fast pass
+    const passResult = useEngagement.getState().unlockWithPass('chapter-5')
+    expect(passResult).toBe(true)
+    expect(useEngagement.getState().wallet.fastPasses).toBe(2)
+    expect(useEngagement.getState().isChapterUnlocked('chapter-5')).toBe(true)
+
+    // Unlock with coins
+    const coinResult = useEngagement.getState().unlockWithCoins('chapter-6', 10)
+    expect(coinResult).toBe(true)
+    expect(useEngagement.getState().wallet.coins).toBe(40)
+    expect(useEngagement.getState().isChapterUnlocked('chapter-6')).toBe(true)
+
+    // Insufficient coins test
+    useEngagement.getState().resetEngagement()
+    expect(useEngagement.getState().wallet.coins).toBe(50)
+    const successBig = useEngagement.getState().unlockWithCoins('chapter-7', 60)
+    expect(successBig).toBe(false)
+    expect(useEngagement.getState().isChapterUnlocked('chapter-7')).toBe(false)
   })
 
   it('handles non-persisted useUI state', () => {

@@ -3,8 +3,10 @@ import { chapter01 } from '../../data/chapters/ch01';
 import { chapter02 } from '../../data/chapters/ch02';
 import { chapter03 } from '../../data/chapters/ch03';
 import { chapter04 } from '../../data/chapters/ch04';
+import { allComments } from '../../data/comments';
 import { useBlockComments } from '../../hooks/useBlockComments';
 import { type WindowChapter } from '../../hooks/useChapterWindow';
+import { useEngagement } from '../../store/useEngagement';
 import { useUI } from '../../store/useUI';
 import type { Block, ParagraphComment } from '../../types/novel';
 import { Drawer } from '../ui/Drawer';
@@ -62,13 +64,30 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({ chapters }) => {
   const activePanel = useUI((s) => s.activePanel);
   const activeBlockId = useUI((s) => s.activeBlockId);
   const closePanel = useUI((s) => s.closePanel);
+  const addedComments = useEngagement((s) => s.addedComments);
 
   const isOpen = activePanel === 'comments';
-  const { comments, count } = useBlockComments(activeBlockId);
+  const { comments: blockComments, count: blockCount } = useBlockComments(activeBlockId);
 
   const [sortMode, setSortMode] = useState<SortMode>('top');
   const [isQuoteExpanded, setIsQuoteExpanded] = useState<boolean>(false);
   const [replyingTo, setReplyingTo] = useState<ParagraphComment | null>(null);
+
+  const comments = useMemo(() => {
+    if (activeBlockId) return blockComments;
+    // Show all chapter comments when opened from dock
+    const seen = new Set<string>();
+    const list: ParagraphComment[] = [];
+    for (const c of [...addedComments, ...allComments]) {
+      if (!seen.has(c.id)) {
+        seen.add(c.id);
+        list.push(c);
+      }
+    }
+    return list;
+  }, [activeBlockId, blockComments, addedComments]);
+
+  const count = activeBlockId ? blockCount : comments.length;
 
   const quoteText = useMemo(
     () => findBlockQuote(activeBlockId, chapters),
@@ -111,21 +130,25 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({ chapters }) => {
     setReplyingTo(target);
   };
 
+  const composerBlockId = activeBlockId || 'ch01-b03';
+
   return (
     <Drawer
       isOpen={isOpen}
       onClose={closePanel}
-      title="Paragraph Comments"
-      description={activeBlockId ? `Comments on paragraph (${activeBlockId})` : undefined}
+      title={activeBlockId ? 'Paragraph Comments' : 'Chapter Discussions'}
+      description={
+        activeBlockId
+          ? `Comments on paragraph (${activeBlockId})`
+          : 'All thoughts, discussions, and theories on this chapter'
+      }
       widthClass="sm:max-w-lg sm:w-full"
       footer={
-        activeBlockId ? (
-          <CommentComposer
-            blockId={activeBlockId}
-            replyingTo={replyingTo}
-            onCancelReply={() => setReplyingTo(null)}
-          />
-        ) : null
+        <CommentComposer
+          blockId={composerBlockId}
+          replyingTo={replyingTo}
+          onCancelReply={() => setReplyingTo(null)}
+        />
       }
     >
       <div className="space-y-4">

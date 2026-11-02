@@ -24,7 +24,7 @@ const generateCoverSvgUri = (): string => {
   <circle cx="300" cy="360" r="140" fill="none" stroke="url(#accent)" stroke-width="3" stroke-dasharray="8 6"/>
   <polygon points="300,260 380,410 220,410" fill="none" stroke="#818cf8" stroke-width="2" stroke-opacity="0.7"/>
   <circle cx="300" cy="360" r="16" fill="#38bdf8"/>
-  <text x="300" y="110" font-family="system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="6" fill="#94a3b8" text-anchor="middle">LITRPG &bull; SYSTEM FANTASY</text>
+  <text x="300" y="110" font-family="system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="6" fill="#94a3b8" text-anchor="middle">LITRPG &#8226; SYSTEM FANTASY</text>
   <text x="300" y="580" font-family="system-ui, sans-serif" font-size="38" font-weight="900" letter-spacing="4" fill="#f8fafc" text-anchor="middle">THE SHATTERED</text>
   <text x="300" y="635" font-family="system-ui, sans-serif" font-size="44" font-weight="900" letter-spacing="6" fill="url(#accent)" text-anchor="middle">REACH</text>
   <text x="300" y="680" font-family="system-ui, sans-serif" font-size="15" font-weight="500" letter-spacing="3" fill="#64748b" text-anchor="middle">BOOK ONE: CALAMITY'S ANCHOR</text>

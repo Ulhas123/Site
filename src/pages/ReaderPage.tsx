@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
+  AudioDrawer,
   BlockRenderer,
   ChapterError,
   ChapterSkeleton,
+  ChapterUnlockModal,
   CollapsedChapterPlaceholder,
   CommentsDrawer,
   ProgressBar,
+  ReaderDock,
   ReaderHeader,
+  SettingsDrawer,
+  TOCDrawer,
 } from '../components/reader';
 import { getNovel } from '../data/api';
 import {
@@ -17,11 +22,16 @@ import {
   useHeaderVisibility,
   useReaderGestures,
 } from '../hooks';
-import type { Novel } from '../types/novel';
+import { useUI } from '../store/useUI';
+import type { ChapterMeta, Novel } from '../types/novel';
 
 export const ReaderPage: React.FC = () => {
   const { novelId = 'shattered-reach', chapterId = 'chapter-1' } = useParams();
   const [novel, setNovel] = useState<Novel | null>(null);
+  const [lockedModalChapter, setLockedModalChapter] = useState<ChapterMeta | null>(null);
+
+  const activePanel = useUI((s) => s.activePanel);
+  const closePanel = useUI((s) => s.closePanel);
 
   // Apply user reading preferences to CSS root variables
   useApplyPrefs();
@@ -69,6 +79,11 @@ export const ReaderPage: React.FC = () => {
     novelTitle: novel?.title || 'Webnovel Reader',
     chapters,
   });
+
+  const currentChapterMeta = useMemo(() => {
+    const targetId = activeChapterId || chapterId;
+    return novel?.chapters.find((c) => c.id === targetId) ?? null;
+  }, [novel?.chapters, activeChapterId, chapterId]);
 
   return (
     <div className="min-h-screen bg-page text-ink transition-colors duration-150 selection:bg-accent/25 selection:text-ink">
@@ -189,8 +204,39 @@ export const ReaderPage: React.FC = () => {
         </div>
       </main>
 
+      {/* Floating Dock & Mobile Bottom Bar */}
+      <ReaderDock
+        novelId={novelId}
+        activeChapter={currentChapterMeta}
+        allChapters={novel?.chapters}
+        onOpenLockedModal={(ch) => setLockedModalChapter(ch)}
+      />
+
+      {/* Table of Contents Drawer with Virtualized List */}
+      <TOCDrawer novel={novel} activeChapterId={activeChapterId || chapterId} />
+
+      {/* Settings Drawer */}
+      <SettingsDrawer
+        isOpen={activePanel === 'settings'}
+        onClose={closePanel}
+      />
+
+      {/* Audio Narration Drawer */}
+      <AudioDrawer
+        chapterTitle={activeChapterTitle || 'Chapter 1'}
+        novelTitle={novel?.title}
+      />
+
       {/* Threaded Comments Drawer */}
       <CommentsDrawer chapters={chapters} />
+
+      {/* Standalone Locked Chapter Modal (e.g. from Dock Prev/Next) */}
+      <ChapterUnlockModal
+        isOpen={Boolean(lockedModalChapter)}
+        onClose={() => setLockedModalChapter(null)}
+        chapter={lockedModalChapter}
+        onUnlockSuccess={() => setLockedModalChapter(null)}
+      />
     </div>
   );
 };
