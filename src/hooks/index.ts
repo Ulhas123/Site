@@ -5,4 +5,5 @@ export * from './useChapterWindow'
 export * from './useActiveChapterSync'
 export * from './useHeaderVisibility'
 export * from './useBlockComments'
+export * from './useReaderResume'
 

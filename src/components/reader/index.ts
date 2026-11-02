@@ -14,3 +14,4 @@ export * from './TOCDrawer';
 export * from './ChapterUnlockModal';
 export * from './AudioDrawer';
 export * from './useVirtualList';
+export * from './PaginatedView';
