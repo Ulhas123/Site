@@ -37,16 +37,39 @@ describe('Inline Comments & Threaded Drawer Logic', () => {
 
   describe('2. Comment Counts & Badge Rules', () => {
     it('accurately distinguishes 0-count, 1-9 muted pill, and 10+ accent pill', () => {
-      // ch01-b01 has 0 seed comments
       const empty = getBlockComments('ch01-b01');
       expect(empty.count).toBe(0);
 
-      // ch01-b03 has 3 seed comments (1-9 range)
+      for (let i = 1; i <= 3; i++) {
+        useEngagement.getState().addComment({
+          id: `test-muted-${i}`,
+          blockId: 'ch01-b03',
+          user: 'User',
+          avatarSeed: 'u',
+          level: 1,
+          text: `Comment ${i}`,
+          likes: 0,
+          createdAt: new Date().toISOString(),
+          isSpoiler: false,
+        });
+      }
       const muted = getBlockComments('ch01-b03');
       expect(muted.count).toBe(3);
       expect(muted.count >= 1 && muted.count <= 9).toBe(true);
 
-      // ch01-b09 has 11 seed comments (10+ range)
+      for (let i = 1; i <= 11; i++) {
+        useEngagement.getState().addComment({
+          id: `test-accent-${i}`,
+          blockId: 'ch01-b09',
+          user: 'User',
+          avatarSeed: 'u',
+          level: 1,
+          text: `Comment ${i}`,
+          likes: 0,
+          createdAt: new Date().toISOString(),
+          isSpoiler: false,
+        });
+      }
       const accent = getBlockComments('ch01-b09');
       expect(accent.count).toBe(11);
       expect(accent.count >= 10).toBe(true);

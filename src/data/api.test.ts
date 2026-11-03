@@ -14,19 +14,9 @@ describe('Novel Content & Types', () => {
     expect(blockIds.length).toBeLessThanOrEqual(32);
   });
 
-  it("asserts that every comment's blockId exists in chapter 1 blocks", () => {
-    const validBlockIds = new Set(chapter01.blocks.map((b) => b.id));
-
-    expect(allComments.length).toBeGreaterThan(0);
-
-    for (const [keyedBlockId, comments] of Object.entries(commentsByBlockId)) {
-      expect(validBlockIds.has(keyedBlockId)).toBe(true);
-
-      for (const comment of comments) {
-        expect(comment.blockId).toBe(keyedBlockId);
-        expect(validBlockIds.has(comment.blockId)).toBe(true);
-      }
-    }
+  it('asserts that no mock comments are generated in chapter 1', () => {
+    expect(allComments).toHaveLength(0);
+    expect(Object.keys(commentsByBlockId)).toHaveLength(0);
   });
 
   it('validates chapter 1 structure (dialogue, 1 system, 1 authorNote, 1 sceneBreak)', () => {
@@ -40,38 +30,13 @@ describe('Novel Content & Types', () => {
     expect(authorNoteBlocks).toHaveLength(1);
     expect(sceneBreakBlocks).toHaveLength(1);
 
-    // Verify system block has status window details
     const statusWindow = systemBlocks[0];
     expect(statusWindow.title).toContain('SYSTEM NOTIFICATION');
     expect(statusWindow.lines?.length).toBeGreaterThanOrEqual(5);
 
-    // Verify author note has text and title
     expect(authorNoteBlocks[0].text).toBeTruthy();
 
-    // Verify scene break has marker
     expect(sceneBreakBlocks[0].marker).toBe('* * *');
-  });
-
-  it('validates comments distribution (6+ blocks, 2 with 10+, 2 spoilers, 3+ replies)', () => {
-    const blocksWithComments = Object.keys(commentsByBlockId);
-    expect(blocksWithComments.length).toBeGreaterThanOrEqual(6);
-
-    const blocksWithTenOrMore = blocksWithComments.filter(
-      (bId) => commentsByBlockId[bId].length >= 10
-    );
-    expect(blocksWithTenOrMore.length).toBeGreaterThanOrEqual(2);
-
-    const spoilers = allComments.filter((c) => c.isSpoiler);
-    expect(spoilers).toHaveLength(2);
-
-    const replies = allComments.filter((c) => Boolean(c.parentId));
-    expect(replies.length).toBeGreaterThanOrEqual(3);
-
-    // Validate that every reply parentId points to an existing comment
-    const commentIds = new Set(allComments.map((c) => c.id));
-    for (const reply of replies) {
-      expect(commentIds.has(reply.parentId!)).toBe(true);
-    }
   });
 
   it('validates 1,200 generated chapter metadata entries for personal reader', () => {

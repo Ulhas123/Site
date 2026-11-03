@@ -241,7 +241,7 @@ describe('Floating Dock, Settings Drawer, and TOC Drawer Suite', () => {
 
     it('aggregates chapter total comments for dock badge', () => {
       const seedCount = allComments.length
-      expect(seedCount).toBe(35)
+      expect(seedCount).toBe(0)
 
       useEngagement.getState().addComment({
         id: 'new-c1',
@@ -257,7 +257,7 @@ describe('Floating Dock, Settings Drawer, and TOC Drawer Suite', () => {
 
       const added = useEngagement.getState().addedComments
       const ch01UserComments = added.filter((c) => c.blockId.startsWith('ch01')).length
-      expect(seedCount + ch01UserComments).toBe(36)
+      expect(seedCount + ch01UserComments).toBe(1)
     })
   })
 })

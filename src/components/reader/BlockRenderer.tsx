@@ -1,9 +1,6 @@
 import React, { memo } from 'react';
-import { useBlockComments } from '../../hooks/useBlockComments';
 import { useUI } from '../../store/useUI';
 import type { Block } from '../../types/novel';
-import { CommentBadge } from './CommentBadge';
-import { splitParagraphLastWord } from './paragraphUtils';
 
 interface BlockRendererProps {
   block: Block;
@@ -18,12 +15,11 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
 }) => {
   const activeBlockId = useUI((state) => state.activeBlockId);
   const isActive = activeBlockId === block.id;
-  const { count } = useBlockComments(block.id);
 
   const baseClasses =
     'mb-[var(--reader-gap)] [text-wrap:pretty] [overflow-wrap:anywhere] selection:bg-accent/20 selection:text-ink';
 
-  const isCommentable = block.type !== 'sceneBreak';
+  const isSelectable = block.type !== 'sceneBreak';
 
   const handleBlockClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('[data-interactive]')) {
@@ -32,31 +28,17 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
     useUI.getState().setActiveBlockId(block.id);
   };
 
-  const renderBadge = (lastWordText: string) => (
-    <span className="whitespace-nowrap">
-      {lastWordText}
-      <CommentBadge
-        blockId={block.id}
-        count={count}
-        isActive={isActive}
-      />
-    </span>
-  );
-
   const renderContent = () => {
     switch (block.type) {
       case 'text': {
-        const { prefix, lastWord } = splitParagraphLastWord(block.text);
         return (
           <p className="font-[family-name:var(--reader-font)] text-[length:var(--reader-size)] leading-[var(--reader-leading)] text-ink">
-            {prefix}
-            {renderBadge(lastWord)}
+            {block.text}
           </p>
         );
       }
 
       case 'dialogue': {
-        const { prefix, lastWord } = splitParagraphLastWord(block.text);
         return (
           <div className="space-y-1">
             {block.speaker && (
@@ -69,8 +51,7 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
                 block.speaker ? 'pl-3 border-l-2 border-line' : ''
               }`}
             >
-              {prefix}
-              {renderBadge(lastWord)}
+              {block.text}
             </p>
           </div>
         );
@@ -96,26 +77,16 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
                 ))}
               </ul>
             )}
-            {block.text && (() => {
-              const { prefix, lastWord } = splitParagraphLastWord(block.text);
-              return (
-                <p className="text-xs sm:text-sm text-ink/90 mt-2 font-mono leading-relaxed">
-                  {prefix}
-                  {renderBadge(lastWord)}
-                </p>
-              );
-            })()}
-            {!block.text && (
-              <div className="mt-2 flex justify-end">
-                <CommentBadge blockId={block.id} count={count} isActive={isActive} />
-              </div>
+            {block.text && (
+              <p className="text-xs sm:text-sm text-ink/90 mt-2 font-mono leading-relaxed">
+                {block.text}
+              </p>
             )}
           </aside>
         );
       }
 
       case 'authorNote': {
-        const { prefix, lastWord } = splitParagraphLastWord(block.text);
         return (
           <section
             aria-label="Author Note"
@@ -125,8 +96,7 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
               {block.title || 'Author Note'}
             </div>
             <p className="font-sans italic text-sm sm:text-base text-ink/90 leading-relaxed m-0">
-              {prefix}
-              {renderBadge(lastWord)}
+              {block.text}
             </p>
           </section>
         );
@@ -152,8 +122,7 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
     }
   };
 
-  // Active paragraph gets accent left rule and tint
-  const activeStyleClasses = isCommentable
+  const activeStyleClasses = isSelectable
     ? isActive
       ? 'border-l-2 border-accent bg-accent/5 pl-3 -ml-3 py-1 rounded-r-md'
       : 'border-l-2 border-transparent pl-3 -ml-3 py-1'
@@ -162,7 +131,7 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
   return (
     <div
       data-block-id={block.id}
-      onClick={isCommentable ? handleBlockClick : undefined}
+      onClick={isSelectable ? handleBlockClick : undefined}
       style={
         isPaginated
           ? undefined
