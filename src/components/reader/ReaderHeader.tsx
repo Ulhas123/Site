@@ -92,7 +92,7 @@ export const ReaderHeader: React.FC<ReaderHeaderProps> = ({
     } else if (window.history.length > 1) {
       navigate(-1);
     } else {
-      navigate('/styleguide');
+      navigate('/');
     }
   };
 

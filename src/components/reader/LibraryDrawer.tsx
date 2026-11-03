@@ -162,6 +162,22 @@ export const LibraryDrawer: React.FC<LibraryDrawerProps> = ({
             </div>
           )}
         </div>
+
+        {/* Home Navigation */}
+        <div className="pt-2 border-t border-line/60 flex items-center justify-between">
+          <span className="text-[11px] text-muted">{novels.length} novels available</span>
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              navigate('/');
+            }}
+            className="text-xs text-muted hover:text-ink flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded px-2 py-1 transition-colors"
+          >
+            <span>All Novels on Home</span>
+            <ExternalLink className="w-3 h-3" aria-hidden="true" />
+          </button>
+        </div>
       </div>
     </Drawer>
   );
