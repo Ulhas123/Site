@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Bookmark, Library, Maximize, Minimize } from 'lucide-react';
+import { ArrowLeft, Bookmark, Download, Library, Maximize, Minimize } from 'lucide-react';
 import { useProgress } from '../../store/useProgress';
 import { useUI } from '../../store/useUI';
 
@@ -11,6 +11,7 @@ interface ReaderHeaderProps {
   chapterId: string;
   chapterTitle: string;
   isVisible: boolean;
+  pdfUrl?: string;
   onBack?: () => void;
   onOpenLibrary?: () => void;
 }
@@ -22,6 +23,7 @@ export const ReaderHeader: React.FC<ReaderHeaderProps> = ({
   chapterId,
   chapterTitle,
   isVisible,
+  pdfUrl,
   onBack,
   onOpenLibrary,
 }) => {
@@ -82,7 +84,7 @@ export const ReaderHeader: React.FC<ReaderHeaderProps> = ({
         await document.exitFullscreen();
       }
     } catch {
-      // Gracefully handle rejection (e.g. user denied or iframe restrictions)
+      // Gracefully handle rejection
     }
   };
 
@@ -101,6 +103,12 @@ export const ReaderHeader: React.FC<ReaderHeaderProps> = ({
       onOpenLibrary();
     } else {
       useUI.getState().openPanel('library');
+    }
+  };
+
+  const handleDownloadPdf = () => {
+    if (pdfUrl) {
+      window.open(pdfUrl, '_blank');
     }
   };
 
@@ -144,6 +152,20 @@ export const ReaderHeader: React.FC<ReaderHeaderProps> = ({
 
         {/* Right: Actions */}
         <div className="flex items-center gap-1 shrink-0">
+          {/* PDF Download Companion Button */}
+          {pdfUrl && (
+            <button
+              type="button"
+              onClick={handleDownloadPdf}
+              aria-label="Download original compiled PDF"
+              title="Download original compiled PDF"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-accent bg-accent/10 hover:bg-accent/20 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+            >
+              <Download className="w-4 h-4 shrink-0" aria-hidden="true" />
+              <span className="hidden sm:inline">PDF</span>
+            </button>
+          )}
+
           {/* Bookmark */}
           <button
             type="button"

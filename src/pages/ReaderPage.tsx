@@ -5,7 +5,6 @@ import {
   BlockRenderer,
   ChapterError,
   ChapterSkeleton,
-  ChapterUnlockModal,
   CollapsedChapterPlaceholder,
   CommentsDrawer,
   LibraryDrawer,
@@ -29,13 +28,12 @@ import {
 import { usePrefs } from '../store/usePrefs';
 import { useProgress } from '../store/useProgress';
 import { useUI } from '../store/useUI';
-import type { ChapterMeta, Novel } from '../types/novel';
+import type { Novel } from '../types/novel';
 
 export const ReaderPage: React.FC = () => {
   const { novelId = 'shattered-reach', chapterId = 'chapter-1' } = useParams();
   const navigate = useNavigate();
   const [novel, setNovel] = useState<Novel | null>(null);
-  const [lockedModalChapter, setLockedModalChapter] = useState<ChapterMeta | null>(null);
 
   const activePanel = useUI((s) => s.activePanel);
   const closePanel = useUI((s) => s.closePanel);
@@ -235,13 +233,12 @@ export const ReaderPage: React.FC = () => {
         </main>
       )}
 
-      <ReaderDock novelId={novelId} activeChapter={currentChapterMeta} allChapters={novel?.chapters} onOpenLockedModal={(ch) => setLockedModalChapter(ch)} />
+      <ReaderDock novelId={novelId} activeChapter={currentChapterMeta} allChapters={novel?.chapters} />
       <TOCDrawer novel={novel} activeChapterId={currentTargetChapterId} />
       <LibraryDrawer isOpen={activePanel === 'library'} onClose={closePanel} currentNovelId={novelId} />
       <SettingsDrawer isOpen={activePanel === 'settings'} onClose={closePanel} />
       <AudioDrawer chapterTitle={activeChapterTitle || 'Chapter 1'} novelTitle={novel?.title} />
       <CommentsDrawer chapters={chapters} />
-      <ChapterUnlockModal isOpen={Boolean(lockedModalChapter)} onClose={() => setLockedModalChapter(null)} chapter={lockedModalChapter} onUnlockSuccess={() => setLockedModalChapter(null)} />
     </div>
   );
 };

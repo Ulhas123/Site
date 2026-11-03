@@ -1,12 +1,11 @@
 import React from 'react'
-import { Check, Coins, Lock } from 'lucide-react'
+import { Check } from 'lucide-react'
 import type { ChapterMeta } from '../../../types/novel'
 
 export interface TOCChapterRowProps {
   chapter: ChapterMeta
   isActive: boolean
   isRead: boolean
-  isUnlocked: boolean
   offsetTop: number
   rowHeight: number
   onSelect: (chapter: ChapterMeta) => void
@@ -16,7 +15,6 @@ export const TOCChapterRow: React.FC<TOCChapterRowProps> = ({
   chapter,
   isActive,
   isRead,
-  isUnlocked,
   offsetTop,
   rowHeight,
   onSelect,
@@ -61,14 +59,6 @@ export const TOCChapterRow: React.FC<TOCChapterRowProps> = ({
             >
               <Check className="w-3.5 h-3.5 text-accent" aria-hidden="true" />
               <span className="hidden xs:inline">Read</span>
-            </span>
-          )}
-
-          {!isUnlocked && (
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-accent/15 text-accent border border-accent/30 flex items-center gap-1">
-              <Lock className="w-3 h-3" aria-hidden="true" />
-              <Coins className="w-2.5 h-2.5" aria-hidden="true" />
-              <span>10</span>
             </span>
           )}
         </div>

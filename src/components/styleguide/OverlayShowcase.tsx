@@ -40,7 +40,7 @@ export function OverlayShowcase() {
       openPanel('comments')
     },
     m: () => {
-      setLastHotkey('M (Opened Wallet Modal)')
+      setLastHotkey('M (Opened Shortcuts Modal)')
       setIsModalOpen(true)
     },
   })

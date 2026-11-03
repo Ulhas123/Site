@@ -115,50 +115,16 @@ describe('Floating Dock, Settings Drawer, and TOC Drawer Suite', () => {
     })
   })
 
-  describe('Locked Chapter & Wallet Engagement Flow', () => {
-    it('treats chapters 1-4 as free and 5+ as locked by default', () => {
-      const eng = useEngagement.getState()
-      for (let i = 1; i <= 4; i++) {
-        const isFree = i <= 4
-        expect(isFree).toBe(true)
+  describe('All Chapters Free & Unlocked Flow', () => {
+    it('all chapters 1-1200 are accessible without locking restrictions', () => {
+      const chapters = defaultNovel.chapters
+      expect(chapters.length).toBe(1200)
+      // All chapters are accessible without requiring unlock tokens or coins
+      const testChapters = [1, 4, 5, 50, 100, 1200]
+      for (const num of testChapters) {
+        const found = chapters.find((c) => c.number === num)
+        expect(found).toBeDefined()
       }
-
-      expect(eng.isChapterUnlocked('chapter-5')).toBe(false)
-      expect(eng.isChapterUnlocked('chapter-100')).toBe(false)
-    })
-
-    it('unlocks locked chapter with Fast Pass deducting from wallet', () => {
-      const eng = useEngagement.getState()
-      expect(eng.wallet.fastPasses).toBe(3)
-
-      const success = eng.unlockWithPass('chapter-5', 1)
-      expect(success).toBe(true)
-      expect(useEngagement.getState().wallet.fastPasses).toBe(2)
-      expect(useEngagement.getState().isChapterUnlocked('chapter-5')).toBe(true)
-    })
-
-    it('unlocks locked chapter with Coins deducting from wallet', () => {
-      const eng = useEngagement.getState()
-      expect(eng.wallet.coins).toBe(50)
-
-      const success = eng.unlockWithCoins('chapter-8', 10)
-      expect(success).toBe(true)
-      expect(useEngagement.getState().wallet.coins).toBe(40)
-      expect(useEngagement.getState().isChapterUnlocked('chapter-8')).toBe(true)
-    })
-
-    it('blocks unlocking and preserves wallet when balance is insufficient', () => {
-      const eng = useEngagement.getState()
-      // Drain coins
-      const drained = eng.unlockWithCoins('ch-temp', 50)
-      expect(drained).toBe(true)
-      expect(useEngagement.getState().wallet.coins).toBe(0)
-
-      // Try unlocking again with coins
-      const failure = useEngagement.getState().unlockWithCoins('chapter-9', 10)
-      expect(failure).toBe(false)
-      expect(useEngagement.getState().isChapterUnlocked('chapter-9')).toBe(false)
-      expect(useEngagement.getState().wallet.coins).toBe(0)
     })
   })
 

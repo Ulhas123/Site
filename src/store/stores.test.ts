@@ -169,7 +169,7 @@ describe('useEngagement & useUI Stores', () => {
     useUI.getState().setChromeVisible(true)
   })
 
-  it('handles engagement: likes, comments, wallet, unlocking', () => {
+  it('handles engagement: likes, comments, reactions, reset', () => {
     const eng = useEngagement.getState()
 
     // Likes
@@ -193,29 +193,15 @@ describe('useEngagement & useUI Stores', () => {
     })
     expect(useEngagement.getState().addedComments).toHaveLength(1)
 
-    // Wallet & unlocking
-    expect(useEngagement.getState().wallet.coins).toBe(50)
-    expect(useEngagement.getState().wallet.fastPasses).toBe(3)
-    expect(useEngagement.getState().isChapterUnlocked('chapter-5')).toBe(false)
+    // Reactions
+    useEngagement.getState().setReaction('block-12', 'fire')
+    expect(useEngagement.getState().getReaction('block-12')).toBe('fire')
 
-    // Unlock with fast pass
-    const passResult = useEngagement.getState().unlockWithPass('chapter-5')
-    expect(passResult).toBe(true)
-    expect(useEngagement.getState().wallet.fastPasses).toBe(2)
-    expect(useEngagement.getState().isChapterUnlocked('chapter-5')).toBe(true)
-
-    // Unlock with coins
-    const coinResult = useEngagement.getState().unlockWithCoins('chapter-6', 10)
-    expect(coinResult).toBe(true)
-    expect(useEngagement.getState().wallet.coins).toBe(40)
-    expect(useEngagement.getState().isChapterUnlocked('chapter-6')).toBe(true)
-
-    // Insufficient coins test
+    // Reset engagement
     useEngagement.getState().resetEngagement()
-    expect(useEngagement.getState().wallet.coins).toBe(50)
-    const successBig = useEngagement.getState().unlockWithCoins('chapter-7', 60)
-    expect(successBig).toBe(false)
-    expect(useEngagement.getState().isChapterUnlocked('chapter-7')).toBe(false)
+    expect(useEngagement.getState().addedComments).toHaveLength(0)
+    expect(useEngagement.getState().likedIds).toHaveLength(0)
+    expect(useEngagement.getState().getReaction('block-12')).toBeUndefined()
   })
 
   it('handles non-persisted useUI state', () => {

@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 import { useUI } from '../../store/useUI';
 import type { Block } from '../../types/novel';
+import { CalloutRenderer } from './CalloutRenderer';
+import { CodeRenderer } from './CodeRenderer';
 
 interface BlockRendererProps {
   block: Block;
@@ -19,7 +21,7 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
   const baseClasses =
     'mb-[var(--reader-gap)] [text-wrap:pretty] [overflow-wrap:anywhere] selection:bg-accent/20 selection:text-ink';
 
-  const isSelectable = block.type !== 'sceneBreak';
+  const isSelectable = block.type !== 'sceneBreak' && block.type !== 'heading';
 
   const handleBlockClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('[data-interactive]')) {
@@ -37,6 +39,99 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
           </p>
         );
       }
+
+      case 'heading': {
+        const HeadingTag = block.level === 2 ? 'h2' : block.level === 3 ? 'h3' : 'h4';
+        const sizeClasses =
+          block.level === 2
+            ? 'text-xl sm:text-2xl font-bold tracking-tight mt-8 mb-4 border-b border-line pb-2'
+            : block.level === 3
+              ? 'text-lg sm:text-xl font-semibold tracking-tight mt-6 mb-3'
+              : 'text-base sm:text-lg font-medium mt-4 mb-2';
+
+        return (
+          <HeadingTag id={block.slug} className={`text-ink ${sizeClasses} select-none`}>
+            {block.text}
+          </HeadingTag>
+        );
+      }
+
+      case 'callout':
+        return <CalloutRenderer block={block} />;
+
+      case 'code':
+        return <CodeRenderer block={block} />;
+
+      case 'diagram':
+        return (
+          <figure className="my-6 flex flex-col items-center justify-center p-3 sm:p-4 bg-raised/40 border border-line rounded-xl break-inside-avoid [break-inside:avoid]">
+            <img
+              src={block.src}
+              alt={block.alt || block.caption || 'Technical Diagram'}
+              loading="lazy"
+              className="max-w-full h-auto rounded-lg shadow-xs"
+            />
+            {block.caption && (
+              <figcaption className="text-xs text-muted mt-2.5 text-center font-sans italic">
+                {block.caption}
+              </figcaption>
+            )}
+          </figure>
+        );
+
+      case 'math':
+        return (
+          <div
+            className="my-5 py-3 px-4 bg-raised/30 border border-line/60 rounded-xl overflow-x-auto text-center text-ink flex items-center justify-center break-inside-avoid [break-inside:avoid]"
+            aria-label="Mathematical formula"
+          >
+            {block.mathml ? (
+              <div
+                className="text-base sm:text-lg inline-block"
+                dangerouslySetInnerHTML={{ __html: block.mathml }}
+              />
+            ) : (
+              <code className="font-mono text-sm sm:text-base text-accent">
+                {block.latex}
+              </code>
+            )}
+          </div>
+        );
+
+      case 'table':
+        return (
+          <div className="my-6 overflow-x-auto border border-line rounded-xl break-inside-avoid [break-inside:avoid]">
+            <table className="w-full text-left text-xs sm:text-sm text-ink border-collapse">
+              {block.headers && (
+                <thead className="bg-raised border-b border-line">
+                  <tr>
+                    {block.headers.map((h, idx) => (
+                      <th key={idx} className="px-4 py-2.5 font-semibold text-ink">
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+              )}
+              <tbody className="divide-y divide-line bg-page">
+                {block.rows.map((row, rIdx) => (
+                  <tr key={rIdx} className="hover:bg-raised/40 transition-colors">
+                    {row.map((cell, cIdx) => (
+                      <td key={cIdx} className="px-4 py-2">
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {block.caption && (
+              <div className="px-4 py-2 border-t border-line text-xs italic text-muted text-center">
+                {block.caption}
+              </div>
+            )}
+          </div>
+        );
 
       case 'dialogue': {
         return (

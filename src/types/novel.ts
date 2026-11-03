@@ -3,7 +3,13 @@ export type BlockType =
   | 'dialogue'
   | 'system'
   | 'authorNote'
-  | 'sceneBreak';
+  | 'sceneBreak'
+  | 'heading'
+  | 'callout'
+  | 'diagram'
+  | 'code'
+  | 'math'
+  | 'table';
 
 export interface BaseBlock {
   id: string;
@@ -38,12 +44,76 @@ export interface SceneBreakBlock extends BaseBlock {
   marker?: string;
 }
 
+export type CalloutVariant =
+  | 'anchor'
+  | 'club'
+  | 'pitfall'
+  | 'project'
+  | 'definition'
+  | 'theorem'
+  | 'proof'
+  | 'remark'
+  | 'standard'
+  | 'principle'
+  | 'system';
+
+export interface CalloutBlock extends BaseBlock {
+  type: 'callout';
+  variant: CalloutVariant;
+  title?: string;
+  subtitle?: string;
+  text?: string;
+  lines?: string[];
+}
+
+export interface DiagramBlock extends BaseBlock {
+  type: 'diagram';
+  src: string;
+  caption?: string;
+  alt?: string;
+}
+
+export interface CodeBlock extends BaseBlock {
+  type: 'code';
+  language: string;
+  code: string;
+  caption?: string;
+  filename?: string;
+}
+
+export interface HeadingBlock extends BaseBlock {
+  type: 'heading';
+  level: 2 | 3 | 4;
+  text: string;
+  slug?: string;
+}
+
+export interface MathBlock extends BaseBlock {
+  type: 'math';
+  latex: string;
+  mathml?: string;
+  display?: boolean;
+}
+
+export interface TableBlock extends BaseBlock {
+  type: 'table';
+  headers?: string[];
+  rows: string[][];
+  caption?: string;
+}
+
 export type Block =
   | TextBlock
   | DialogueBlock
   | SystemBlock
   | AuthorNoteBlock
-  | SceneBreakBlock;
+  | SceneBreakBlock
+  | CalloutBlock
+  | DiagramBlock
+  | CodeBlock
+  | HeadingBlock
+  | MathBlock
+  | TableBlock;
 
 export interface Chapter {
   id: string;
@@ -66,6 +136,8 @@ export interface Novel {
   synopsis: string;
   cover: string;
   chapters: ChapterMeta[];
+  category?: 'novel' | 'study';
+  pdfUrl?: string;
 }
 
 export interface ParagraphComment {

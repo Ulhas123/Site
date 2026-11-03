@@ -11,7 +11,6 @@ export * from './CommentsDrawer';
 export * from './ReaderDock';
 export * from './SettingsDrawer';
 export * from './TOCDrawer';
-export * from './ChapterUnlockModal';
 export * from './AudioDrawer';
 export * from './LibraryDrawer';
 export * from './useVirtualList';

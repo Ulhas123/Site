@@ -17,14 +17,12 @@ export interface ReaderDockProps {
   novelId: string
   activeChapter?: ChapterMeta | null
   allChapters?: ChapterMeta[]
-  onOpenLockedModal?: (chapter: ChapterMeta) => void
 }
 
 export const ReaderDock: React.FC<ReaderDockProps> = ({
   novelId,
   activeChapter,
   allChapters = [],
-  onOpenLockedModal,
 }) => {
   const navigate = useNavigate()
   const activePanel = useUI((s) => s.activePanel)
@@ -33,7 +31,6 @@ export const ReaderDock: React.FC<ReaderDockProps> = ({
   const chromeVisible = useUI((s) => s.chromeVisible)
 
   const addedComments = useEngagement((s) => s.addedComments)
-  const isChapterUnlocked = useEngagement((s) => s.isChapterUnlocked)
 
   // Chapter comment total badge
   const chapterCommentsTotal = useMemo(() => {
@@ -64,14 +61,6 @@ export const ReaderDock: React.FC<ReaderDockProps> = ({
 
   const handleNavigateChapter = (target: ChapterMeta | null) => {
     if (!target) return
-    const isFree = target.number <= 4
-    const isUnlocked = isFree || isChapterUnlocked(target.id)
-
-    if (!isUnlocked && onOpenLockedModal) {
-      onOpenLockedModal(target)
-      return
-    }
-
     navigate(`/novel/${novelId}/chapter/${target.id}`)
   }
 
