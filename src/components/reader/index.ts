@@ -13,5 +13,6 @@ export * from './SettingsDrawer';
 export * from './TOCDrawer';
 export * from './ChapterUnlockModal';
 export * from './AudioDrawer';
+export * from './LibraryDrawer';
 export * from './useVirtualList';
 export * from './PaginatedView';

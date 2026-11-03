@@ -5,6 +5,7 @@ import { chapter03 } from './chapters/ch03';
 import { chapter04 } from './chapters/ch04';
 import { allComments, commentsByBlockId } from './comments';
 import { defaultNovel } from './novel';
+import { INITIALIZED_NOVELS, type NovelSummary } from './novelsRegistry';
 
 const DELAY_MS = 150;
 
@@ -26,18 +27,97 @@ const chaptersById: Record<string, Chapter> = {
   '4': chapter04,
 };
 
-export async function getNovel(): Promise<Novel> {
+const novelCache = new Map<string, Novel>();
+const chapterCache = new Map<string, Chapter>();
+
+export async function getNovel(novelId: string = 'shattered-reach'): Promise<Novel> {
   await delay(DELAY_MS);
+
+  if (!novelId || novelId === 'shattered-reach' || novelId === defaultNovel.id) {
+    return defaultNovel;
+  }
+
+  if (novelCache.has(novelId)) {
+    return novelCache.get(novelId)!;
+  }
+
+  if (typeof window !== 'undefined' && typeof fetch === 'function') {
+    try {
+      const res = await fetch(`/novels/${encodeURIComponent(novelId)}/novel.json`);
+      if (res.ok) {
+        const loaded = (await res.json()) as Novel;
+        novelCache.set(novelId, loaded);
+        return loaded;
+      }
+    } catch {
+      // Network or file fetch error fallback
+    }
+  }
+
   return defaultNovel;
 }
 
-export async function getChapter(id: string): Promise<Chapter> {
+export async function getChapter(id: string, novelId: string = 'shattered-reach'): Promise<Chapter> {
   await delay(DELAY_MS);
-  const chapter = chaptersById[id];
-  if (!chapter) {
-    throw new Error(`Chapter not found: ${id}`);
+
+  const cacheKey = `${novelId}:${id}`;
+  if (chapterCache.has(cacheKey)) {
+    return chapterCache.get(cacheKey)!;
   }
-  return chapter;
+
+  // Check built-in mock chapters for default novel
+  if (!novelId || novelId === 'shattered-reach' || novelId === defaultNovel.id) {
+    const mock = chaptersById[id];
+    if (mock) return mock;
+  }
+
+  // Fetch chapter JSON from public/novels/<novelId>/chapters/<id>.json
+  if (typeof window !== 'undefined' && typeof fetch === 'function') {
+    const formattedId = id.startsWith('chapter-') ? id : `chapter-${id}`;
+    const targetUrl = `/novels/${encodeURIComponent(novelId)}/chapters/${encodeURIComponent(formattedId)}.json`;
+
+    try {
+      const res = await fetch(targetUrl);
+      if (res.ok) {
+        const loaded = (await res.json()) as Chapter;
+        chapterCache.set(cacheKey, loaded);
+        return loaded;
+      }
+    } catch {
+      // Fallback
+    }
+  }
+
+  // Check alias fallback for test compatibility
+  const fallback = chaptersById[id];
+  if (fallback) return fallback;
+
+  throw new Error(`Chapter not found: ${id}`);
+}
+
+export async function getLibraryNovels(): Promise<NovelSummary[]> {
+  await delay(50);
+
+  const library: NovelSummary[] = [
+    {
+      id: defaultNovel.id,
+      title: defaultNovel.title,
+      author: defaultNovel.author,
+      synopsis: defaultNovel.synopsis,
+      cover: defaultNovel.cover,
+      totalChapters: defaultNovel.chapters.length,
+      firstChapterId: defaultNovel.chapters[0]?.id || 'chapter-1',
+    },
+  ];
+
+  // Merge initialized novels
+  for (const novel of INITIALIZED_NOVELS) {
+    if (novel.id !== defaultNovel.id && !library.some((n) => n.id === novel.id)) {
+      library.push(novel);
+    }
+  }
+
+  return library;
 }
 
 export async function getComments(chapterId: string): Promise<ParagraphComment[]> {

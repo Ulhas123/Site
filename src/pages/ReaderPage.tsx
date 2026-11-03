@@ -8,6 +8,7 @@ import {
   ChapterUnlockModal,
   CollapsedChapterPlaceholder,
   CommentsDrawer,
+  LibraryDrawer,
   PaginatedView,
   ProgressBar,
   ReaderDock,
@@ -65,7 +66,7 @@ export const ReaderPage: React.FC = () => {
 
   useEffect(() => {
     let mounted = true;
-    getNovel()
+    getNovel(novelId)
       .then((data) => {
         if (mounted) setNovel(data);
       })
@@ -236,6 +237,7 @@ export const ReaderPage: React.FC = () => {
 
       <ReaderDock novelId={novelId} activeChapter={currentChapterMeta} allChapters={novel?.chapters} onOpenLockedModal={(ch) => setLockedModalChapter(ch)} />
       <TOCDrawer novel={novel} activeChapterId={currentTargetChapterId} />
+      <LibraryDrawer isOpen={activePanel === 'library'} onClose={closePanel} currentNovelId={novelId} />
       <SettingsDrawer isOpen={activePanel === 'settings'} onClose={closePanel} />
       <AudioDrawer chapterTitle={activeChapterTitle || 'Chapter 1'} novelTitle={novel?.title} />
       <CommentsDrawer chapters={chapters} />

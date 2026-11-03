@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0e1a"/>
+      <stop offset="50%" stop-color="#12182c"/>
+      <stop offset="100%" stop-color="#05070e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="900" fill="url(#bg)"/>
+  <circle cx="300" cy="360" r="240" fill="url(#glow)"/>
+  <rect x="24" y="24" width="552" height="852" fill="none" stroke="#38bdf8" stroke-opacity="0.3" stroke-width="2" rx="8"/>
+  <circle cx="300" cy="340" r="130" fill="none" stroke="url(#accent)" stroke-width="3" stroke-dasharray="8 6"/>
+  <polygon points="300,240 370,390 230,390" fill="none" stroke="#818cf8" stroke-width="2" stroke-opacity="0.7"/>
+  <circle cx="300" cy="340" r="14" fill="#38bdf8"/>
+  <text x="300" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="6" fill="#94a3b8" text-anchor="middle">WEBNOVEL &#8226; NOVELFIRE ARCHIVE</text>
+  <text x="300" y="510" font-family="system-ui, -apple-system, sans-serif" font-size="38" font-weight="900" letter-spacing="3" fill="#f8fafc" text-anchor="middle">TOP-CLASS</text>
+  <text x="300" y="564" font-family="system-ui, -apple-system, sans-serif" font-size="38" font-weight="900" letter-spacing="3" fill="#f8fafc" text-anchor="middle">COMPREHENSION:</text>
+  <text x="300" y="618" font-family="system-ui, -apple-system, sans-serif" font-size="38" font-weight="900" letter-spacing="3" fill="url(#accent)" text-anchor="middle">START WITH BASIC...</text>
+  <line x1="200" y1="715" x2="400" y2="715" stroke="#334155" stroke-width="1"/>
+  <text x="300" y="760" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" letter-spacing="4" fill="#cbd5e1" text-anchor="middle">NOVELFIRE</text>
+</svg>

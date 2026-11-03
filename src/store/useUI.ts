@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type ActivePanel = null | 'toc' | 'settings' | 'comments' | 'audio'
+export type ActivePanel = null | 'toc' | 'settings' | 'comments' | 'audio' | 'library'
 
 export interface UIState {
   activePanel: ActivePanel

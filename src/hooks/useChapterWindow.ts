@@ -40,31 +40,26 @@ export function useChapterWindow({ novel, initialChapterId }: UseChapterWindowOp
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const loadingChapterIdsRef = useRef<Set<string>>(new Set());
 
-  // Register DOM ref for measurement
   const registerChapterRef = useCallback((chapterId: string, el: HTMLElement | null) => {
     chapterRefs.current[chapterId] = el;
   }, []);
 
-  // Measure chapter DOM node
   const measureChapterHeight = useCallback((chapterId: string): number => {
     const el = chapterRefs.current[chapterId];
     if (el) {
       const rect = el.getBoundingClientRect();
-      if (rect.height > 0) {
-        return Math.round(rect.height);
-      }
+      if (rect.height > 0) return Math.round(rect.height);
     }
     return 1000;
   }, []);
 
-  // Load a single chapter by ID
   const fetchChapter = useCallback(
     async (chapterId: string) => {
       if (loadingChapterIdsRef.current.has(chapterId)) return;
       loadingChapterIdsRef.current.add(chapterId);
 
       try {
-        const data = await getChapter(chapterId);
+        const data = await getChapter(chapterId, novel?.id);
         setChapters((prev) => {
           const index = prev.findIndex((c) => c.id === chapterId);
           const updatedItem: WindowChapter = {
@@ -77,13 +72,9 @@ export function useChapterWindow({ novel, initialChapterId }: UseChapterWindowOp
             measuredHeight: 0,
           };
 
-          let nextChapters: WindowChapter[];
-          if (index >= 0) {
-            nextChapters = [...prev];
-            nextChapters[index] = { ...prev[index], ...updatedItem };
-          } else {
-            nextChapters = [...prev, updatedItem];
-          }
+          const nextChapters = index >= 0
+            ? prev.map((c, i) => (i === index ? { ...c, ...updatedItem } : c))
+            : [...prev, updatedItem];
 
           // Enforce max 3 mounted chapters
           const mounted = nextChapters.filter((c) => !c.isCollapsed && c.status === 'loaded');
@@ -108,15 +99,13 @@ export function useChapterWindow({ novel, initialChapterId }: UseChapterWindowOp
       } catch (err: unknown) {
         const errorMsg = err instanceof Error ? err.message : 'Failed to load chapter';
         setChapters((prev) =>
-          prev.map((c) =>
-            c.id === chapterId ? { ...c, status: 'error', errorMessage: errorMsg } : c
-          )
+          prev.map((c) => (c.id === chapterId ? { ...c, status: 'error', errorMessage: errorMsg } : c))
         );
       } finally {
         loadingChapterIdsRef.current.delete(chapterId);
       }
     },
-    [measureChapterHeight]
+    [measureChapterHeight, novel]
   );
 
   // Load initial chapter
@@ -124,7 +113,7 @@ export function useChapterWindow({ novel, initialChapterId }: UseChapterWindowOp
     if (!initialChapterId) return;
     let ignore = false;
 
-    getChapter(initialChapterId)
+    getChapter(initialChapterId, novel?.id)
       .then((data) => {
         if (ignore) return;
         setChapters([
@@ -152,34 +141,26 @@ export function useChapterWindow({ novel, initialChapterId }: UseChapterWindowOp
     return () => {
       ignore = true;
     };
-  }, [initialChapterId]);
+  }, [initialChapterId, novel?.id]);
 
-  // Expand a collapsed chapter (e.g. when scrolling back up)
+  // Expand a collapsed chapter
   const expandChapter = useCallback(
     (chapterId: string) => {
       setChapters((prev) => {
         const target = prev.find((c) => c.id === chapterId);
         if (!target || !target.isCollapsed) return prev;
 
-        // Un-collapse target
         const uncollapsed = prev.map((c) => (c.id === chapterId ? { ...c, isCollapsed: false } : c));
-
-        // If mounted chapters now exceed 3, collapse the latest chapter at the bottom
         const mounted = uncollapsed.filter((c) => !c.isCollapsed && c.status === 'loaded');
+
         if (mounted.length > 3) {
           const latestMounted = mounted[mounted.length - 1];
           const measuredHeight = measureChapterHeight(latestMounted.id);
-
-          return uncollapsed.map((c) => {
-            if (c.id === latestMounted.id) {
-              return {
-                ...c,
-                isCollapsed: true,
-                measuredHeight: measuredHeight > 0 ? measuredHeight : c.measuredHeight || 1000,
-              };
-            }
-            return c;
-          });
+          return uncollapsed.map((c) =>
+            c.id === latestMounted.id
+              ? { ...c, isCollapsed: true, measuredHeight: measuredHeight > 0 ? measuredHeight : c.measuredHeight || 1000 }
+              : c
+          );
         }
 
         return uncollapsed;
@@ -188,14 +169,11 @@ export function useChapterWindow({ novel, initialChapterId }: UseChapterWindowOp
     [measureChapterHeight]
   );
 
-  // Append next chapter
   const appendNextChapter = useCallback(() => {
     if (!novel || chapters.length === 0) return;
-
     const last = chapters[chapters.length - 1];
     if (last.status === 'loading') return;
 
-    // Find next chapter metadata in novel
     const currentIndex = novel.chapters.findIndex(
       (c) => c.id === last.id || c.number === last.number
     );
@@ -218,7 +196,6 @@ export function useChapterWindow({ novel, initialChapterId }: UseChapterWindowOp
     }
   }, [novel, chapters, fetchChapter]);
 
-  // Bottom sentinel observer with rootMargin 1200px
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel || typeof IntersectionObserver === 'undefined') return;
@@ -230,11 +207,7 @@ export function useChapterWindow({ novel, initialChapterId }: UseChapterWindowOp
           appendNextChapter();
         }
       },
-      {
-        root: null,
-        rootMargin: '1200px',
-        threshold: 0,
-      }
+      { root: null, rootMargin: '1200px', threshold: 0 }
     );
 
     observer.observe(sentinel);

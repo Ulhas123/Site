@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Bookmark, Library, Maximize, Minimize } from 'lucide-react';
 import { useProgress } from '../../store/useProgress';
+import { useUI } from '../../store/useUI';
 
 interface ReaderHeaderProps {
   novelId: string;
@@ -99,7 +100,7 @@ export const ReaderHeader: React.FC<ReaderHeaderProps> = ({
     if (onOpenLibrary) {
       onOpenLibrary();
     } else {
-      navigate('/styleguide');
+      useUI.getState().openPanel('library');
     }
   };
 
