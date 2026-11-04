@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" width="100%" height="100%">
+  <defs>
+    <linearGradient id="godaan-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#140f0b"/>
+      <stop offset="40%" stop-color="#24140d"/>
+      <stop offset="70%" stop-color="#1c110b"/>
+      <stop offset="100%" stop-color="#0a0705"/>
+    </linearGradient>
+    <linearGradient id="godaan-gold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="50%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="godaan-saffron" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#c2410c"/>
+    </linearGradient>
+    <radialGradient id="godaan-glow" cx="50%" cy="38%" r="48%">
+      <stop offset="0%" stop-color="#ea580c" stop-opacity="0.32"/>
+      <stop offset="60%" stop-color="#d97706" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="900" fill="url(#godaan-bg)"/>
+  <circle cx="300" cy="350" r="240" fill="url(#godaan-glow)"/>
+
+  <!-- Ornate Frame Borders -->
+  <rect x="22" y="22" width="556" height="856" rx="14" fill="none" stroke="url(#godaan-gold)" stroke-width="2" stroke-opacity="0.5"/>
+  <rect x="32" y="32" width="536" height="836" rx="10" fill="none" stroke="#d97706" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="6 4"/>
+
+  <!-- Corner Flourishes -->
+  <path d="M 40,70 L 70,40 M 40,40 L 75,40 M 40,40 L 40,75" stroke="url(#godaan-gold)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 560,70 L 530,40 M 560,40 L 525,40 M 560,40 L 560,75" stroke="url(#godaan-gold)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 40,830 L 70,860 M 40,860 L 75,860 M 40,860 L 40,825" stroke="url(#godaan-gold)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 560,830 L 530,860 M 560,860 L 525,860 M 560,860 L 560,825" stroke="url(#godaan-gold)" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+  <!-- Top Badge -->
+  <g transform="translate(300, 105)">
+    <rect x="-140" y="-18" width="280" height="36" rx="18" fill="#2d170a" stroke="url(#godaan-gold)" stroke-width="1.5" stroke-opacity="0.7"/>
+    <text x="0" y="5" font-family="'Noto Serif Devanagari', 'Nirmala UI', serif" font-size="13" font-weight="700" letter-spacing="4" fill="#fbbf24" text-anchor="middle">कालजयी महाकाव्य • HINDI CLASSIC</text>
+  </g>
+
+  <!-- Center Artwork: Sun, Wheat and Cow Motif Elements -->
+  <g transform="translate(300, 310)">
+    <!-- Sun Rays & Radiant Ring -->
+    <circle cx="0" cy="0" r="130" fill="none" stroke="url(#godaan-gold)" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="8 6"/>
+    <circle cx="0" cy="0" r="110" fill="#291206" fill-opacity="0.7" stroke="#d97706" stroke-width="1.5" stroke-opacity="0.5"/>
+    <circle cx="0" cy="0" r="85" fill="none" stroke="url(#godaan-gold)" stroke-width="1" stroke-opacity="0.3"/>
+
+    <!-- Sacred Cow & Agricultural Life Silhouette (Semantic Vector Motif) -->
+    <path d="M -50,45 C -45,15 -25,-10 0,-15 C 25,-10 45,15 50,45 Z" fill="url(#godaan-saffron)" fill-opacity="0.25"/>
+    <!-- Central Icon: Book & Cow Horn Symbolism -->
+    <path d="M -35,15 Q 0,-25 35,15 Q 0,40 -35,15 Z" fill="none" stroke="url(#godaan-gold)" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="0" cy="15" r="12" fill="#fbbf24"/>
+    <circle cx="0" cy="15" r="5" fill="#1c110b"/>
+    <!-- Lotus / Wheat Flakes -->
+    <path d="M 0,-40 C -15,-60 0,-75 0,-75 C 0,-75 15,-60 0,-40 Z" fill="url(#godaan-gold)"/>
+    <path d="M -25,-30 C -45,-45 -40,-65 -40,-65 C -40,-65 -20,-55 -25,-30 Z" fill="url(#godaan-gold)" fill-opacity="0.75"/>
+    <path d="M 25,-30 C 45,-45 40,-65 40,-65 C 40,-65 20,-55 25,-30 Z" fill="url(#godaan-gold)" fill-opacity="0.75"/>
+  </g>
+
+  <!-- Title: Devanagari "गोदान" -->
+  <text x="300" y="525" font-family="'Noto Serif Devanagari', 'Nirmala UI', 'Mangal', serif" font-size="76" font-weight="900" letter-spacing="4" fill="url(#godaan-gold)" text-anchor="middle" filter="drop-shadow(0px 4px 12px rgba(0,0,0,0.8))">गोदान</text>
+
+  <!-- Title: English "GODAAN" -->
+  <text x="300" y="580" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="800" letter-spacing="14" fill="#fed7aa" text-anchor="middle">GODAAN</text>
+
+  <!-- Separator Line with Diamond -->
+  <g transform="translate(300, 630)">
+    <line x1="-150" y1="0" x2="-20" y2="0" stroke="url(#godaan-gold)" stroke-width="1.5" stroke-opacity="0.7"/>
+    <polygon points="0,-6 6,0 0,6 -6,0" fill="#fbbf24"/>
+    <line x1="20" y1="0" x2="150" y2="0" stroke="url(#godaan-gold)" stroke-width="1.5" stroke-opacity="0.7"/>
+  </g>
+
+  <!-- Subtitle -->
+  <text x="300" y="670" font-family="'Noto Serif Devanagari', 'Nirmala UI', serif" font-size="16" font-style="italic" fill="#fdba74" text-anchor="middle">भारतीय कृषक जीवन का अमर महाकाव्य</text>
+
+  <!-- Author: Munshi Premchand -->
+  <g transform="translate(300, 755)">
+    <text x="0" y="0" font-family="'Noto Serif Devanagari', 'Nirmala UI', serif" font-size="26" font-weight="700" letter-spacing="2" fill="#fffbeb" text-anchor="middle">मुंशी प्रेमचंद</text>
+    <text x="0" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="6" fill="#fcd34d" text-anchor="middle">MUNSHI PREMCHAND</text>
+  </g>
+
+  <!-- Footer Edition Marker -->
+  <text x="300" y="835" font-family="monospace" font-size="11" letter-spacing="3" fill="#78350f" text-anchor="middle">COMPLETE 36 CHAPTERS • 1936-2026</text>
+</svg>

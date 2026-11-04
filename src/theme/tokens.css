@@ -5,7 +5,7 @@
 
 :root {
   /* Reader defaults */
-  --reader-font: 'Lora Variable', serif;
+  --reader-font: 'Lora Variable', 'Noto Serif Devanagari', 'Nirmala UI', serif;
   --reader-size: 1.125rem;
   --reader-leading: 1.75;
   --reader-gap: 1.5rem;

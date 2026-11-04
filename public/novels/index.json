@@ -9,6 +9,15 @@
     "firstChapterId": "chapter-1"
   },
   {
+    "id": "godaan",
+    "title": "गोदान (Godaan)",
+    "author": "मुंशी प्रेमचंद (Munshi Premchand)",
+    "synopsis": "मुंशी प्रेमचंद का अमर कालजयी महाकाव्यात्मक उपन्यास 'गोदान'। यह भारतीय कृषक जीवन, होरी और धनिया के अटूट संघर्ष, सामाजिक मर्यादाओं, महाजनी शोषण और मर्यादा की रक्षा का सबसे जीवंत और मार्मिक यथार्थवादी दस्तावेज़ है।",
+    "cover": "/novels/godaan/cover.svg",
+    "totalChapters": 36,
+    "firstChapterId": "chapter-1"
+  },
+  {
     "id": "ai-and-ds-engineering-handbook",
     "title": "The First-Year AI & Data Science Engineering Compendium",
     "author": "Ulhas Karankar",

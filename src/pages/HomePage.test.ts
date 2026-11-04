@@ -5,10 +5,11 @@ import type { NovelSummary } from '../data/novelsRegistry';
 describe('Home Page Novels & Catalog Logic', () => {
   it('loads active novels and study material for home page display', async () => {
     const novels = await getLibraryNovels();
-    expect(novels.length).toBe(2);
+    expect(novels.length).toBe(3);
 
     const titles = novels.map((n) => n.title);
     expect(titles).toContain('Supremacy Games');
+    expect(titles).toContain('गोदान (Godaan)');
     expect(titles).toContain('The First-Year AI & Data Science Engineering Compendium');
     expect(titles).not.toContain('The Shattered Reach');
     expect(titles).not.toContain('Top-Class Comprehension: Start with Basic Fist Techniques');

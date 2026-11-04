@@ -6,9 +6,9 @@ import {
 } from '../store/usePrefs'
 
 export const FONT_FAMILY_MAP: Record<ReaderFontFamily, string> = {
-  lora: "'Lora Variable', serif",
-  inter: "'Inter Variable', sans-serif",
-  merriweather: "'Merriweather Variable', serif",
+  lora: "'Lora Variable', 'Noto Serif Devanagari', 'Nirmala UI', serif",
+  inter: "'Inter Variable', 'Noto Sans Devanagari', 'Nirmala UI', sans-serif",
+  merriweather: "'Merriweather Variable', 'Noto Serif Devanagari', 'Nirmala UI', serif",
   mono: "'JetBrains Mono Variable', monospace",
 }
 

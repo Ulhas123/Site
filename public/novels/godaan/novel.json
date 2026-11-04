@@ -1,0 +1,334 @@
+{
+  "id": "godaan",
+  "title": "गोदान (Godaan)",
+  "author": "मुंशी प्रेमचंद (Munshi Premchand)",
+  "synopsis": "मुंशी प्रेमचंद का अमर कालजयी महाकाव्यात्मक उपन्यास 'गोदान'। यह भारतीय कृषक जीवन, होरी और धनिया के अटूट संघर्ष, सामाजिक मर्यादाओं, महाजनी शोषण और मर्यादा की रक्षा का सबसे जीवंत और मार्मिक यथार्थवादी दस्तावेज़ है।",
+  "cover": "/novels/godaan/cover.svg",
+  "epubUrl": "/novels/godaan/godaan.epub",
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "number": 1,
+      "title": "अध्याय 1",
+      "wordCount": 3329,
+      "publishedAt": "1936-06-04T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-2",
+      "number": 2,
+      "title": "अध्याय 2",
+      "wordCount": 2081,
+      "publishedAt": "1936-06-07T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-3",
+      "number": 3,
+      "title": "अध्याय 3",
+      "wordCount": 4603,
+      "publishedAt": "1936-06-10T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-4",
+      "number": 4,
+      "title": "अध्याय 4",
+      "wordCount": 8887,
+      "publishedAt": "1936-06-13T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-5",
+      "number": 5,
+      "title": "अध्याय 5",
+      "wordCount": 2841,
+      "publishedAt": "1936-06-16T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-6",
+      "number": 6,
+      "title": "अध्याय 6",
+      "wordCount": 10407,
+      "publishedAt": "1936-06-19T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-7",
+      "number": 7,
+      "title": "अध्याय 7",
+      "wordCount": 11379,
+      "publishedAt": "1936-06-22T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-8",
+      "number": 8,
+      "title": "अध्याय 8",
+      "wordCount": 3378,
+      "publishedAt": "1936-06-25T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-9",
+      "number": 9,
+      "title": "अध्याय 9",
+      "wordCount": 3308,
+      "publishedAt": "1936-06-28T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-10",
+      "number": 10,
+      "title": "अध्याय 10",
+      "wordCount": 3385,
+      "publishedAt": "1936-07-01T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-11",
+      "number": 11,
+      "title": "अध्याय 11",
+      "wordCount": 3722,
+      "publishedAt": "1936-07-04T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-12",
+      "number": 12,
+      "title": "अध्याय 12",
+      "wordCount": 3514,
+      "publishedAt": "1936-07-07T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-13",
+      "number": 13,
+      "title": "अध्याय 13",
+      "wordCount": 4451,
+      "publishedAt": "1936-07-10T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-14",
+      "number": 14,
+      "title": "अध्याय 14",
+      "wordCount": 3327,
+      "publishedAt": "1936-07-13T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-15",
+      "number": 15,
+      "title": "अध्याय 15",
+      "wordCount": 5675,
+      "publishedAt": "1936-07-16T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-16",
+      "number": 16,
+      "title": "अध्याय 16",
+      "wordCount": 4232,
+      "publishedAt": "1936-07-19T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-17",
+      "number": 17,
+      "title": "अध्याय 17",
+      "wordCount": 5124,
+      "publishedAt": "1936-07-22T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-18",
+      "number": 18,
+      "title": "अध्याय 18",
+      "wordCount": 5303,
+      "publishedAt": "1936-07-25T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-19",
+      "number": 19,
+      "title": "अध्याय 19",
+      "wordCount": 1742,
+      "publishedAt": "1936-07-28T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-20",
+      "number": 20,
+      "title": "अध्याय 20",
+      "wordCount": 5638,
+      "publishedAt": "1936-07-31T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-21",
+      "number": 21,
+      "title": "अध्याय 21",
+      "wordCount": 5520,
+      "publishedAt": "1936-08-03T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-22",
+      "number": 22,
+      "title": "अध्याय 22",
+      "wordCount": 6595,
+      "publishedAt": "1936-08-06T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-23",
+      "number": 23,
+      "title": "अध्याय 23",
+      "wordCount": 5134,
+      "publishedAt": "1936-08-09T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-24",
+      "number": 24,
+      "title": "अध्याय 24",
+      "wordCount": 4197,
+      "publishedAt": "1936-08-12T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-25",
+      "number": 25,
+      "title": "अध्याय 25",
+      "wordCount": 2744,
+      "publishedAt": "1936-08-15T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-26",
+      "number": 26,
+      "title": "अध्याय 26",
+      "wordCount": 2134,
+      "publishedAt": "1936-08-18T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-27",
+      "number": 27,
+      "title": "अध्याय 27",
+      "wordCount": 5524,
+      "publishedAt": "1936-08-21T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-28",
+      "number": 28,
+      "title": "अध्याय 28",
+      "wordCount": 3945,
+      "publishedAt": "1936-08-24T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-29",
+      "number": 29,
+      "title": "अध्याय 29",
+      "wordCount": 4970,
+      "publishedAt": "1936-08-27T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-30",
+      "number": 30,
+      "title": "अध्याय 30",
+      "wordCount": 5230,
+      "publishedAt": "1936-08-30T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-31",
+      "number": 31,
+      "title": "अध्याय 31",
+      "wordCount": 4918,
+      "publishedAt": "1936-09-02T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-32",
+      "number": 32,
+      "title": "अध्याय 32",
+      "wordCount": 1585,
+      "publishedAt": "1936-09-05T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-33",
+      "number": 33,
+      "title": "अध्याय 33",
+      "wordCount": 5995,
+      "publishedAt": "1936-09-08T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-34",
+      "number": 34,
+      "title": "अध्याय 34",
+      "wordCount": 2073,
+      "publishedAt": "1936-09-11T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-35",
+      "number": 35,
+      "title": "अध्याय 35",
+      "wordCount": 3769,
+      "publishedAt": "1936-09-14T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    },
+    {
+      "id": "chapter-36",
+      "number": 36,
+      "title": "अध्याय 36",
+      "wordCount": 2840,
+      "publishedAt": "1936-09-17T00:00:00+00:00",
+      "translator": "मुंशी प्रेमचंद",
+      "editor": "प्रेमचंद (मूल पाठ)"
+    }
+  ]
+}
