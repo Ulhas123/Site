@@ -30,10 +30,10 @@ const chaptersById: Record<string, Chapter> = {
 const novelCache = new Map<string, Novel>();
 const chapterCache = new Map<string, Chapter>();
 
-export async function getNovel(novelId: string = 'shattered-reach'): Promise<Novel> {
+export async function getNovel(novelId: string = 'supremacy-games'): Promise<Novel> {
   await delay(DELAY_MS);
 
-  if (!novelId || novelId === 'shattered-reach' || novelId === defaultNovel.id) {
+  if (novelId === 'shattered-reach' || novelId === defaultNovel.id) {
     return defaultNovel;
   }
 
@@ -57,7 +57,7 @@ export async function getNovel(novelId: string = 'shattered-reach'): Promise<Nov
   return defaultNovel;
 }
 
-export async function getChapter(id: string, novelId: string = 'shattered-reach'): Promise<Chapter> {
+export async function getChapter(id: string, novelId: string = 'supremacy-games'): Promise<Chapter> {
   await delay(DELAY_MS);
 
   const cacheKey = `${novelId}:${id}`;
@@ -65,8 +65,8 @@ export async function getChapter(id: string, novelId: string = 'shattered-reach'
     return chapterCache.get(cacheKey)!;
   }
 
-  // Check built-in mock chapters for default novel
-  if (!novelId || novelId === 'shattered-reach' || novelId === defaultNovel.id) {
+  // Check built-in mock chapters for test fallback
+  if (novelId === 'shattered-reach' || novelId === defaultNovel.id) {
     const mock = chaptersById[id];
     if (mock) return mock;
   }
@@ -97,27 +97,7 @@ export async function getChapter(id: string, novelId: string = 'shattered-reach'
 
 export async function getLibraryNovels(): Promise<NovelSummary[]> {
   await delay(50);
-
-  const library: NovelSummary[] = [
-    {
-      id: defaultNovel.id,
-      title: defaultNovel.title,
-      author: defaultNovel.author,
-      synopsis: defaultNovel.synopsis,
-      cover: defaultNovel.cover,
-      totalChapters: defaultNovel.chapters.length,
-      firstChapterId: defaultNovel.chapters[0]?.id || 'chapter-1',
-    },
-  ];
-
-  // Merge initialized novels
-  for (const novel of INITIALIZED_NOVELS) {
-    if (novel.id !== defaultNovel.id && !library.some((n) => n.id === novel.id)) {
-      library.push(novel);
-    }
-  }
-
-  return library;
+  return [...INITIALIZED_NOVELS];
 }
 
 export async function getComments(chapterId: string): Promise<ParagraphComment[]> {

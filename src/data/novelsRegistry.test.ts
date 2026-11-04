@@ -4,8 +4,8 @@ import { defaultNovel } from './novel';
 import { INITIALIZED_NOVELS } from './novelsRegistry';
 
 describe('Scraped Novel Initializer & Registry', () => {
-  it('registers all downloaded novels from scraper', () => {
-    expect(INITIALIZED_NOVELS.length).toBeGreaterThanOrEqual(2);
+  it('registers only active novels and study material', () => {
+    expect(INITIALIZED_NOVELS.length).toBe(2);
 
     const supremacy = INITIALIZED_NOVELS.find((n) => n.id === 'supremacy-games');
     expect(supremacy).toBeDefined();
@@ -13,31 +13,25 @@ describe('Scraped Novel Initializer & Registry', () => {
     expect(supremacy?.totalChapters).toBe(1958);
     expect(supremacy?.cover).toContain('/novels/supremacy-games/cover.svg');
 
-    const topClass = INITIALIZED_NOVELS.find(
-      (n) => n.id === 'top-class-comprehension-start-with-basic-fist-techniques'
-    );
-    expect(topClass).toBeDefined();
-    expect(topClass?.title).toBe('Top-Class Comprehension: Start with Basic Fist Techniques');
-    expect(topClass?.totalChapters).toBe(3);
+    const study = INITIALIZED_NOVELS.find((n) => n.id === 'ai-and-ds-engineering-handbook');
+    expect(study).toBeDefined();
+    expect(study?.category).toBe('study');
+
+    // Example novels removed
+    expect(INITIALIZED_NOVELS.some((n) => n.id === 'top-class-comprehension-start-with-basic-fist-techniques')).toBe(false);
+    expect(INITIALIZED_NOVELS.some((n) => n.id === 'shattered-reach')).toBe(false);
   });
 
-  it('getLibraryNovels aggregates default novel and initialized novels', async () => {
+  it('getLibraryNovels returns active catalog', async () => {
     const library = await getLibraryNovels();
-    expect(library.length).toBeGreaterThanOrEqual(3);
+    expect(library.length).toBe(2);
 
-    // Default novel is present
-    expect(library.some((n) => n.id === defaultNovel.id)).toBe(true);
-    // Scraped novels are present
     expect(library.some((n) => n.id === 'supremacy-games')).toBe(true);
-    expect(
-      library.some((n) => n.id === 'top-class-comprehension-start-with-basic-fist-techniques')
-    ).toBe(true);
+    expect(library.some((n) => n.id === 'ai-and-ds-engineering-handbook')).toBe(true);
+    expect(library.some((n) => n.id === 'shattered-reach')).toBe(false);
   });
 
-  it('default novel fallback works when novelId is default or omitted', async () => {
-    const novel1 = await getNovel();
-    expect(novel1.id).toBe(defaultNovel.id);
-
+  it('default novel fallback works for explicit mock calls', async () => {
     const novel2 = await getNovel('shattered-reach');
     expect(novel2.id).toBe(defaultNovel.id);
   });

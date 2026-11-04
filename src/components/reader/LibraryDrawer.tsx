@@ -15,7 +15,7 @@ export interface LibraryDrawerProps {
 export const LibraryDrawer: React.FC<LibraryDrawerProps> = ({
   isOpen,
   onClose,
-  currentNovelId = 'shattered-reach',
+  currentNovelId = 'supremacy-games',
 }) => {
   const navigate = useNavigate();
   const [novels, setNovels] = useState<NovelSummary[]>([]);

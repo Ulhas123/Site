@@ -33,7 +33,7 @@ import { ProtectedView } from '../components/reader/ProtectedView';
 import type { Novel } from '../types/novel';
 
 export const ReaderPage: React.FC = () => {
-  const { novelId = 'shattered-reach', chapterId = 'chapter-1' } = useParams();
+  const { novelId = 'supremacy-games', chapterId = 'chapter-1' } = useParams();
   const navigate = useNavigate();
   const [novel, setNovel] = useState<Novel | null>(null);
   const isAuthenticated = useAuth((s) => s.isAuthenticated);

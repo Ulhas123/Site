@@ -22,15 +22,6 @@ export const INITIALIZED_NOVELS: NovelSummary[] = [
     "firstChapterId": "chapter-1"
   },
   {
-    "id": "top-class-comprehension-start-with-basic-fist-techniques",
-    "title": "Top-Class Comprehension: Start with Basic Fist Techniques",
-    "author": "NovelFire",
-    "synopsis": "Lu Changsheng looked at the attribute panel in front of him with a strange expression. With a comprehension value as high as 98, yet being labeled as \"average,\" it could only mean that the standard value should be 100.",
-    "cover": "/novels/top-class-comprehension-start-with-basic-fist-techniques/cover.svg",
-    "totalChapters": 3,
-    "firstChapterId": "chapter-1"
-  },
-  {
     "id": "ai-and-ds-engineering-handbook",
     "title": "The First-Year AI & Data Science Engineering Compendium",
     "author": "Ulhas Karankar",

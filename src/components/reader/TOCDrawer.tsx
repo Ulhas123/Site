@@ -81,7 +81,7 @@ export const TOCDrawer: React.FC<TOCDrawerProps> = ({ novel, activeChapterId }) 
 
   const handleSelectChapter = (ch: ChapterMeta) => {
     closePanel()
-    navigate(`/novel/${novel?.id || 'shattered-reach'}/chapter/${ch.id}`)
+    navigate(`/novel/${novel?.id || 'supremacy-games'}/chapter/${ch.id}`)
   }
 
   return (
