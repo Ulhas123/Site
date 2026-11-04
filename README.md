@@ -174,7 +174,7 @@ This repository is optimized for deployment on **Cloudflare Pages**:
 SPA routing is handled natively by [`wrangler.json`](./wrangler.json):
 ```json
 {
-  "name": "my-reader",
+  "name": "myreader",
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application"
