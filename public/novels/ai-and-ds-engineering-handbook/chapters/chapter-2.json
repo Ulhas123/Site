@@ -1,0 +1,200 @@
+{
+  "id": "chapter-2",
+  "number": 2,
+  "title": "Chapter 2: Linux Foundations and Windows Subsystem for Linux (WSL2)",
+  "wordCount": 614,
+  "publishedAt": "2026-11-03T00:00:00Z",
+  "translator": "Ulhas Karankar",
+  "editor": "Department of AI & Data Science",
+  "blocks": [
+    {
+      "id": "ch02_b001",
+      "type": "text",
+      "text": "Modern artificial intelligence, data engineering, and cloud backend deployments run almost exclusively on Linux. Whether deploying a machine learning microservice in a Kubernetes pod or compiling a high-throughput C++ binary, the operating environment is POSIX-compliant Linux. As a student on Windows, understanding the architecture of the Windows Subsystem for Linux (WSL2) and mastering terminal fundamentals is your primary gateway to serious software development."
+    },
+    {
+      "id": "ch02_b002",
+      "type": "heading",
+      "level": 2,
+      "text": "Operating System Architecture: Why Linux Matters",
+      "slug": "operating-system-architecture-why-linux-matters"
+    },
+    {
+      "id": "ch02_b003",
+      "type": "text",
+      "text": "An operating system kernel acts as the arbiter between hardware resources (CPU, RAM, storage, network interfaces) and user applications."
+    },
+    {
+      "id": "ch02_b004",
+      "type": "diagram",
+      "src": "/novels/ai-and-ds-engineering-handbook/figures/fig_1_1.svg",
+      "caption": "User Space versus Kernel Space separation in Linux.",
+      "alt": "User Space versus Kernel Space separation in Linux."
+    },
+    {
+      "id": "ch02_b005",
+      "type": "text",
+      "text": "In Windows, user-mode programs communicate with the Windows NT kernel via Win32 APIs and the Windows Executive. In Linux, applications invoke direct POSIX system calls (`syscalls`) such as `fork()`, `execve()`, and `mmap()`. Because machine learning libraries (such as PyTorch, OpenCV, and CUDA toolkits) and container runtimes (such as Docker) rely on low-level Linux kernel primitives—namely *namespaces* and *cgroups*—running them natively in Linux delivers maximum compatibility and performance."
+    },
+    {
+      "id": "ch02_b006",
+      "type": "heading",
+      "level": 2,
+      "text": "WSL1 versus WSL2: Under the Hood",
+      "slug": "wsl1-versus-wsl2-under-the-hood"
+    },
+    {
+      "id": "ch02_b007",
+      "type": "text",
+      "text": "To provide Linux capabilities on Windows without requiring full-system dual-booting, Microsoft introduced the Windows Subsystem for Linux."
+    },
+    {
+      "id": "ch02_b008",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• **WSL1**: Utilized a translation layer. When a Linux binary executed a syscall like `fork()`, WSL1 intercepted the call and translated it on the fly into an equivalent NT kernel system call. This resulted in poor file system I/O performance and lacked support for Linux features like Docker daemon containers and complete CUDA device mapping.",
+        "• **WSL2**: Completely discarded translation. Instead, WSL2 executes a real, Microsoft-maintained Linux kernel inside a lightweight, highly optimized Hyper-V utility virtual machine. It boots in under one second, dynamically allocates RAM up to a configurable threshold, and supports 100% Linux system call compatibility."
+      ]
+    },
+    {
+      "id": "ch02_b009",
+      "type": "callout",
+      "variant": "anchor",
+      "title": null,
+      "text": "**The 9P Protocol & The Filesystem Performance Boundary:**\nIn WSL2, your Linux distribution (typically Ubuntu) stores its files inside a virtual hard disk (`ext4.vhdx`). When you access Windows files from Linux via the mount point `/mnt/c/`, traffic passes over the Plan 9 (9P) network file protocol. This incurs significant serialization overhead.\n**Golden Rule**: Always store your Git repositories, Python virtual environments, and node_modules inside the Linux root filesystem (e.g., `~/projects/`), **not** inside `/mnt/c/Users/...`. Accessing Linux files inside `~` yields direct, native ext4 disk speeds ($>10\\times$ faster)."
+    },
+    {
+      "id": "ch02_b010",
+      "type": "heading",
+      "level": 2,
+      "text": "Essential Linux Command Line Reference",
+      "slug": "essential-linux-command-line-reference"
+    },
+    {
+      "id": "ch02_b011",
+      "type": "text",
+      "text": "The bash/zsh shell is a text-based command language and interpreter. Every engineer must possess muscle memory for standard filesystem, search, and process management operations."
+    },
+    {
+      "id": "ch02_b012",
+      "type": "heading",
+      "level": 3,
+      "text": "Navigation and File Management",
+      "slug": "navigation-and-file-management"
+    },
+    {
+      "id": "ch02_b013",
+      "type": "code",
+      "language": "bash",
+      "code": "# Print Current Working Directory\npwd\n\n# List directory contents with permissions, size, and hidden files\nls -la\n\n# Change directory (relative, absolute, or home)\ncd ~/projects\ncd ..          # Move up one directory level\ncd -           # Toggle back to previous directory\n\n# Create nested directory trees\nmkdir -p src/components/ui\n\n# Create empty file or update timestamp\ntouch index.js\n\n# Copy files and directories recursively\ncp app.py app_backup.py\ncp -r src/ src_backup/\n\n# Move or rename files\nmv old_name.cpp new_name.cpp\nmv main.py ./src/\n\n# Remove files and directories (use caution with -rf)\nrm temp.log\nrm -rf build/",
+      "caption": "Core Filesystem Navigation and Management"
+    },
+    {
+      "id": "ch02_b014",
+      "type": "heading",
+      "level": 3,
+      "text": "Inspecting and Processing File Streams",
+      "slug": "inspecting-and-processing-file-streams"
+    },
+    {
+      "id": "ch02_b015",
+      "type": "text",
+      "text": "Linux treats everything as a file, and processes communicate by chaining standard input (`stdin`), standard output (`stdout`), and standard error (`stderr`) using pipes (`|`)."
+    },
+    {
+      "id": "ch02_b016",
+      "type": "code",
+      "language": "bash",
+      "code": "# Output entire file to terminal\ncat config.json\n\n# Read large files with paging (q to exit)\nless dataset.csv\n\n# View first/last N lines of a file\nhead -n 25 training.log\ntail -n 50 training.log\ntail -f training.log   # Continuously follow live logs\n\n# Search recursively for a pattern, showing line numbers, ignoring binary\ngrep -rnI \"API_KEY\" ./src\n\n# Count lines, words, and bytes\nwc -l dataset.csv\n\n# Chaining commands with pipes: Find errors and count occurrences\ncat server.log | grep \"ERROR\" | wc -l\n\n# Redirection: Overwrite (>) versus Append (>>)\necho \"export PORT=8080\" > .env\necho \"export DEBUG=true\" >> .env",
+      "caption": "Stream Redirection and Text Processing"
+    },
+    {
+      "id": "ch02_b017",
+      "type": "heading",
+      "level": 3,
+      "text": "Process Control and Monitoring",
+      "slug": "process-control-and-monitoring"
+    },
+    {
+      "id": "ch02_b018",
+      "type": "code",
+      "language": "bash",
+      "code": "# Display all running processes on the system\nps aux\n\n# Search for a specific process PID\nps aux | grep python\n\n# Real-time resource monitoring (CPU, RAM)\ntop\nhtop    # Interactive, readable process manager (install via apt)\n\n# Terminate processes gracefully (SIGTERM) or forcefully (SIGKILL)\nkill 14205         # SIGTERM (code 15)\nkill -9 14205      # SIGKILL (code 9, non-catchable)\npkill -f \"node\"    # Kill by process name pattern\n\n# Run a long job in the background and detach from terminal\nnohup python3 train_model.py > train.log 2>&1 &",
+      "caption": "Process Inspection and Management"
+    },
+    {
+      "id": "ch02_b019",
+      "type": "heading",
+      "level": 3,
+      "text": "Permissions, Ownership, and Superuser Access",
+      "slug": "permissions-ownership-and-superuser-access"
+    },
+    {
+      "id": "ch02_b020",
+      "type": "text",
+      "text": "In Linux, every file and directory possesses an owner, an associated group, and permission bits structured as `rwx` (Read=4, Write=2, Execute=1):"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "**Octal Value**",
+        "**Symbolic**",
+        "**Permission**",
+        "**Applied To**"
+      ],
+      "rows": [
+        [
+          "`755`",
+          "`rwxr-xr-x`",
+          "Owner: Full; Group & Others: Read + Exec",
+          "Executable binaries/scripts"
+        ],
+        [
+          "`644`",
+          "`rw-r–r–`",
+          "Owner: Read/Write; Group & Others: Read",
+          "Standard source code files"
+        ],
+        [
+          "`600`",
+          "`rw——-`",
+          "Owner: Read/Write only; Others: None",
+          "Private SSH keys / secrets"
+        ]
+      ],
+      "caption": "Standard Linux File Permission Octals.",
+      "id": "ch02_b021"
+    },
+    {
+      "id": "ch02_b022",
+      "type": "code",
+      "language": "bash",
+      "code": "# Make a shell script executable\nchmod +x build.sh\n\n# Update package repository and install essential development tools\nsudo apt update && sudo apt upgrade -y\nsudo apt install -y build-essential git curl wget python3-pip python3-venv",
+      "caption": "Changing Permissions and Package Installation"
+    },
+    {
+      "id": "ch02_b023",
+      "type": "callout",
+      "variant": "club",
+      "title": null,
+      "text": "**Question**: *“Why are you compiling C++ and running Python in WSL2 instead of PowerShell directly on Windows?”*\n**Defense**: *“WSL2 provides a true Linux kernel via Hyper-V virtualization. Linux provides identical memory allocation, glibc runtime behaviors, POSIX socket handling, and native package managers that match cloud production environments. Running on WSL2 ensures that our dev environment mirrors AWS/GCP servers and containerized Docker deployments, eliminating OS-specific drift.”*"
+    },
+    {
+      "id": "ch02_b024",
+      "type": "callout",
+      "variant": "pitfall",
+      "title": null,
+      "text": "**Pitfall: Windows CRLF vs. Linux LF Line Endings:**\nWindows uses Carriage Return + Line Feed (`\\ r\\ n`), whereas Linux uses Line Feed only (`\\ n`). If you create a Bash script on Windows or clone a repo with default Windows Git settings, running `./script.sh` inside WSL will fail with:\n`/bin/bash^ M: bad interpreter: No such file or directory`.\n**Fix**: Convert line endings using `dos2unix script.sh` or configure Git globally:\n`git config –global core.autocrlf input`."
+    },
+    {
+      "id": "ch02_b025",
+      "type": "callout",
+      "variant": "project",
+      "title": "WSL2 \\& Bash Mastery",
+      "text": "{Automated System Resource Watcher}\nWrite a bash script `syswatch.sh` that logs system uptime, available RAM in megabytes, top 3 memory-consuming processes, and saves the snapshot with an ISO-8601 timestamp into a log directory.\n\n\\begin{lstlisting}[language=bash, caption={System Health Monitoring Script (`syswatch.sh`)}]\n#!/usr/bin/env bash\nset -euo pipefail\n\nLOG_DIR=\"$HOME/logs\"\nmkdir -p \"$LOG_DIR\"\nTIMESTAMP=$(date +\"%Y-%m-%d_%H-%M-%S\")\nLOG_FILE=\"$LOG_DIR/system_health_${TIMESTAMP}.log\"\n\n{\n echo \"==========================================\"\n echo \"SYSTEM HEALTH REPORT: $TIMESTAMP\"\n echo \"Hostname: $(hostname) | Kernel: $(uname -r)\"\n echo \"==========================================\"\n echo \"\"\n echo \"— MEMORY USAGE (MB) —\"\n free -m\n echo \"\"\n echo \"— TOP 3 CPU CONSUMING PROCESSES —\"\n ps aux –sort=-%cpu | head -n 4\n echo \"\"\n echo \"— DISK SPACE USAGE —\"\n df -h /\n echo \"==========================================\"\n} > \"$LOG_FILE\"\n\necho \"Report generated successfully at: $LOG_FILE\"\n\\end{lstlisting}"
+    }
+  ],
+  "authorThoughts": "Key takeaway from Linux Foundations and Windows Subsystem for Linux (WSL2): Focus on first principles, mental anchors, and portfolio readiness."
+}

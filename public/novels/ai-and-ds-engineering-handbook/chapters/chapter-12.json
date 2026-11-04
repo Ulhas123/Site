@@ -1,0 +1,148 @@
+{
+  "id": "chapter-12",
+  "number": 12,
+  "title": "Chapter 12: Algorithmic Entity Resolution and Deduplication",
+  "wordCount": 500,
+  "publishedAt": "2026-11-03T00:00:00Z",
+  "translator": "Ulhas Karankar",
+  "editor": "Department of AI & Data Science",
+  "blocks": [
+    {
+      "id": "ch12_b001",
+      "type": "text",
+      "text": "In real-world data engineering and enterprise machine learning, datasets do not come equipped with clean, unique foreign keys. Records originate from disparate systems: CRM databases, legacy spreadsheets, mobile app event logs, and user inputs. The problem of identifying, matching, and merging duplicate records that refer to the same real-world entity across databases without a shared identifier is known as **Entity Resolution** (or **Record Linkage / Deduplication**)."
+    },
+    {
+      "id": "ch12_b002",
+      "type": "heading",
+      "level": 2,
+      "text": "The Combinatorial Explosion and Pipeline Architecture",
+      "slug": "the-combinatorial-explosion-and-pipeline-architecture"
+    },
+    {
+      "id": "ch12_b003",
+      "type": "text",
+      "text": "The fundamental challenge of entity resolution is combinatorial scale. If a dataset contains $N = 100,000$ records, comparing every record against every other record requires:"
+    },
+    {
+      "id": "ch12_b004",
+      "type": "math",
+      "latex": "\\binom{N}{2} = \\frac{N(N - 1)}{2} = \\frac{100,000 \\times 99,999}{2} \\approx 5 \\times 10^9 \\text{ pairwise comparisons}",
+      "mathml": "<math display=\"inline\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mrow><mo stretchy=\"true\" form=\"prefix\">(</mo><mfrac linethickness=\"0\"><mi>N</mi><mn>2</mn></mfrac><mo stretchy=\"true\" form=\"postfix\">)</mo></mrow><mo>=</mo><mfrac><mrow><mi>N</mi><mo stretchy=\"false\" form=\"prefix\">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy=\"false\" form=\"postfix\">)</mo></mrow><mn>2</mn></mfrac><mo>=</mo><mfrac><mrow><mn>100</mn><mo>,</mo><mn>000</mn><mo>×</mo><mn>99</mn><mo>,</mo><mn>999</mn></mrow><mn>2</mn></mfrac><mo>≈</mo><mn>5</mn><mo>×</mo><msup><mn>10</mn><mn>9</mn></msup><mrow><mspace width=\"0.333em\"></mspace><mtext mathvariant=\"normal\"> pairwise comparisons</mtext></mrow></mrow><annotation encoding=\"application/x-tex\">\\binom{N}{2} = \\frac{N(N - 1)}{2} = \\frac{100,000 \\times 99,999}{2} \\approx 5 \\times 10^9 \\text{ pairwise comparisons}</annotation></semantics></math>",
+      "display": true
+    },
+    {
+      "id": "ch12_b005",
+      "type": "text",
+      "text": "Even if each fuzzy string comparison executes in 1 microsecond, a single run takes nearly 1.5 hours. At $N = 1,000,000$, it requires 15 years of continuous compute!"
+    },
+    {
+      "id": "ch12_b006",
+      "type": "text",
+      "text": "To solve this, industrial entity resolution executes as a multi-stage funnel:"
+    },
+    {
+      "id": "ch12_b007",
+      "type": "diagram",
+      "src": "/novels/ai-and-ds-engineering-handbook/figures/fig_1_1.svg",
+      "caption": "The Multi-Stage Industrial Entity Resolution Funnel.",
+      "alt": "The Multi-Stage Industrial Entity Resolution Funnel."
+    },
+    {
+      "id": "ch12_b008",
+      "type": "heading",
+      "level": 2,
+      "text": "Similarity Metrics: Edit Distance versus Token Distance",
+      "slug": "similarity-metrics-edit-distance-versus-token-distance"
+    },
+    {
+      "id": "ch12_b009",
+      "type": "text",
+      "text": "Matching messy strings requires mathematical metrics:"
+    },
+    {
+      "id": "ch12_b010",
+      "type": "heading",
+      "level": 3,
+      "text": "Levenshtein Edit Distance",
+      "slug": "levenshtein-edit-distance"
+    },
+    {
+      "id": "ch12_b011",
+      "type": "text",
+      "text": "The Levenshtein distance between two strings $a$ and $b$ is the minimum number of single-character edits (insertions, deletions, or substitutions) required to transform string $a$ into string $b$:"
+    },
+    {
+      "id": "ch12_b012",
+      "type": "math",
+      "latex": "\\text{sim}_{\\text{Lev}}(a, b) = 1 - \\frac{\\text{dist}_{\\text{Lev}}(a, b)}{\\max(|a|, |b|)}",
+      "mathml": "<math display=\"inline\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mtext mathvariant=\"normal\">sim</mtext><mtext mathvariant=\"normal\">Lev</mtext></msub><mo stretchy=\"false\" form=\"prefix\">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy=\"false\" form=\"postfix\">)</mo><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><mrow><msub><mtext mathvariant=\"normal\">dist</mtext><mtext mathvariant=\"normal\">Lev</mtext></msub><mo stretchy=\"false\" form=\"prefix\">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy=\"false\" form=\"postfix\">)</mo></mrow><mrow><mrow><mi mathvariant=\"normal\">max</mi><mo>&#8289;</mo></mrow><mo stretchy=\"false\" form=\"prefix\">(</mo><mo stretchy=\"false\" form=\"prefix\">|</mo><mi>a</mi><mo stretchy=\"false\" form=\"prefix\">|</mo><mo>,</mo><mo stretchy=\"false\" form=\"prefix\">|</mo><mi>b</mi><mo stretchy=\"false\" form=\"prefix\">|</mo><mo stretchy=\"false\" form=\"postfix\">)</mo></mrow></mfrac></mrow><annotation encoding=\"application/x-tex\">\\text{sim}_{\\text{Lev}}(a, b) = 1 - \\frac{\\text{dist}_{\\text{Lev}}(a, b)}{\\max(|a|, |b|)}</annotation></semantics></math>",
+      "display": true
+    },
+    {
+      "id": "ch12_b013",
+      "type": "heading",
+      "level": 3,
+      "text": "Jaro-Winkler Similarity",
+      "slug": "jaro-winkler-similarity"
+    },
+    {
+      "id": "ch12_b014",
+      "type": "text",
+      "text": "Designed specifically for person names, Jaro-Winkler accounts for character transpositions and heavily boosts matches that share an identical prefix:"
+    },
+    {
+      "id": "ch12_b015",
+      "type": "math",
+      "latex": "d_w = d_j + (\\ell p (1 - d_j))",
+      "mathml": "<math display=\"inline\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>d</mi><mi>w</mi></msub><mo>=</mo><msub><mi>d</mi><mi>j</mi></msub><mo>+</mo><mo stretchy=\"false\" form=\"prefix\">(</mo><mi>ℓ</mi><mi>p</mi><mo stretchy=\"false\" form=\"prefix\">(</mo><mn>1</mn><mo>−</mo><msub><mi>d</mi><mi>j</mi></msub><mo stretchy=\"false\" form=\"postfix\">)</mo><mo stretchy=\"false\" form=\"postfix\">)</mo></mrow><annotation encoding=\"application/x-tex\">d_w = d_j + (\\ell p (1 - d_j))</annotation></semantics></math>",
+      "display": true
+    },
+    {
+      "id": "ch12_b016",
+      "type": "text",
+      "text": "where $d_j$ is the standard Jaro distance, $\\ell$ is the length of common prefix (up to 4 characters), and $p = 0.1$ is a standard scaling factor."
+    },
+    {
+      "id": "ch12_b017",
+      "type": "heading",
+      "level": 2,
+      "text": "End-to-End Implementation with Polars",
+      "slug": "end-to-end-implementation-with-polars"
+    },
+    {
+      "id": "ch12_b018",
+      "type": "text",
+      "text": "The following production pipeline uses Polars for fast blocking and Python's string distance metrics to cluster duplicate customer records:"
+    },
+    {
+      "id": "ch12_b019",
+      "type": "code",
+      "language": "python",
+      "code": "import polars as pl\nimport re\n\n# 1. Raw noisy entity dataset\nraw_records = [\n    {\"raw_id\": 1, \"name\": \"Ulhas Karankar\", \"city\": \"Indore\", \"phone\": \"9826011111\"},\n    {\"raw_id\": 2, \"name\": \"Ulhas K.\", \"city\": \"Indore\", \"phone\": \"98260-11111\"},\n    {\"raw_id\": 3, \"name\": \"Rohit Sharma\", \"city\": \"Mumbai\", \"phone\": \"9999922222\"},\n    {\"raw_id\": 4, \"name\": \"U. Karankar\", \"city\": \"Indore\", \"phone\": \"9826011111\"},\n    {\"raw_id\": 5, \"name\": \"Rohit S.\", \"city\": \"Mumbai\", \"phone\": \"99999-22222\"},\n]\n\n# 2. Stage 1: Ingestion & Normalization\ndef normalize_text(text: str) -> str:\n    text = text.lower()\n    return re.sub(r\"[^a-z0-9]\", \"\", text)\n\ndf = pl.DataFrame(raw_records).with_columns([\n    pl.col(\"name\").map_elements(normalize_text, return_dtype=pl.String).alias(\"norm_name\"),\n    pl.col(\"phone\").map_elements(normalize_text, return_dtype=pl.String).alias(\"norm_phone\"),\n    pl.col(\"city\").str.to_lowercase().alias(\"norm_city\")\n])\n\n# 3. Stage 2: Blocking Key Generation\n# Records sharing the same city and first 2 letters of name form a candidate block\ndf = df.with_columns(\n    (pl.col(\"norm_city\") + \"_\" + pl.col(\"norm_name\").str.slice(0, 2)).alias(\"block_key\")\n)\n\n# 4. Stage 3: Candidate Pair Generation via Self-Join within Blocks\ncandidates = (\n    df.join(df, on=\"block_key\", suffix=\"_right\")\n    # Only compare distinct pairs where id_left < id_right to eliminate duplicates\n    .filter(pl.col(\"raw_id\") < pl.col(\"raw_id_right\"))\n    .select([\n        pl.col(\"raw_id\"),\n        pl.col(\"raw_id_right\"),\n        pl.col(\"norm_name\"),\n        pl.col(\"norm_name_right\"),\n        pl.col(\"norm_phone\"),\n        pl.col(\"norm_phone_right\"),\n    ])\n)\n\n# 5. Stage 4: Scoring and Disjoint Set Clustering (Union-Find)\nclass DisjointSet:\n    def __init__(self):\n        self.parent = {}\n    def find(self, x):\n        if self.parent.setdefault(x, x) != x:\n            self.parent[x] = self.find(self.parent[x])\n        return self.parent[x]\n    def union(self, x, y):\n        self.parent[self.find(x)] = self.find(y)\n\nds = DisjointSet()\n\nfor row in candidates.iter_rows(named=True):\n    id_a = row[\"raw_id\"]\n    id_b = row[\"raw_id_right\"]\n    \n    # Exact phone match or high string prefix agreement\n    phone_match = row[\"norm_phone\"] == row[\"norm_phone_right\"]\n    name_prefix_match = row[\"norm_name\"][:3] == row[\"norm_name_right\"][:3]\n    \n    if phone_match and name_prefix_match:\n        ds.union(id_a, id_b)\n\n# Assign unified Canonical Entity IDs\nfinal_mapping = {rec[\"raw_id\"]: ds.find(rec[\"raw_id\"]) for rec in raw_records}\nprint(\"Resolved Canonical Entity Clusters:\")\nfor raw_id, canonical_id in final_mapping.items():\n    print(f\"Record {raw_id} -> Mapped to Canonical Entity: {canonical_id}\")",
+      "caption": "Production Entity Resolution Pipeline in Python and Polars"
+    },
+    {
+      "id": "ch12_b020",
+      "type": "callout",
+      "variant": "anchor",
+      "title": null,
+      "text": "**The Blocking Key Trade-off:**\nBlocking reduces comparison complexity by creating coarse partitions. However, choosing a blocking key requires balancing **Recall** versus **Computational Speed**:\n\\begin{itemize}\n \\item *Too loose* (e.g. Blocking on Country): Blocks remain massive, and the $O(N^2)$ comparison explosion returns.\n \\item *Too tight* (e.g. Blocking on Exact Date of Birth): If a duplicate record contains a typo in the birth year, the two records will never enter the same block, resulting in a false negative (missed link).\n\\end{itemize}\nIndustrial systems use **multi-pass blocking** (e.g., Pass 1 blocks on Soundex(Name) + Zipcode; Pass 2 blocks on Phone Number)."
+    },
+    {
+      "id": "ch12_b021",
+      "type": "callout",
+      "variant": "club",
+      "title": null,
+      "text": "**Question**: *“How do you perform entity resolution on 50 million records where even fuzzy blocking in memory fails?”*\n**Defense**: *“At 50 million records, we use distributed inverted index blocking with Locality-Sensitive Hashing (LSH) or MinHash on character n-grams. By hashing similar strings into the same hash buckets with high probability, we restrict comparisons strictly within matching buckets. In production, we run this pipeline across distributed clusters using Polars LazyFrames or Apache Spark.”*"
+    },
+    {
+      "id": "ch12_b022",
+      "type": "callout",
+      "variant": "pitfall",
+      "title": null,
+      "text": "**Pitfall: Transitive Clustering Drift (Chain Corruption):**\nWhen using transitive clustering (Union-Find), if Record A matches Record B (threshold 0.85), and Record B matches Record C (threshold 0.85), Record A and C are merged into the same entity cluster, even if the direct similarity between A and C is only 0.40! This causes cluster drift where completely unrelated entities bleed together.\n**Remedy**: Use hierarchical agglomerative clustering with average/complete linkage or graph modularity community detection (Louvain algorithm) rather than naive transitive union."
+    }
+  ],
+  "authorThoughts": "Key takeaway from Algorithmic Entity Resolution and Deduplication: Focus on first principles, mental anchors, and portfolio readiness."
+}

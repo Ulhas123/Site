@@ -1,0 +1,206 @@
+{
+  "id": "chapter-3",
+  "number": 3,
+  "title": "Chapter 3: Version Control, Git Internals, and Team Collaboration",
+  "wordCount": 516,
+  "publishedAt": "2026-11-03T00:00:00Z",
+  "translator": "Ulhas Karankar",
+  "editor": "Department of AI & Data Science",
+  "blocks": [
+    {
+      "id": "ch03_b001",
+      "type": "text",
+      "text": "Version control is the bedrock of professional engineering. In collaborative software teams and university tech clubs, code that is not tracked in Git does not exist. Git is not simply a cloud backup utility; it is a distributed, content-addressable cryptographic filesystem designed to manage the evolution of source code."
+    },
+    {
+      "id": "ch03_b002",
+      "type": "heading",
+      "level": 2,
+      "text": "The Git Mental Model: Snapshots, Not Deltas",
+      "slug": "the-git-mental-model-snapshots-not-deltas"
+    },
+    {
+      "id": "ch03_b003",
+      "type": "text",
+      "text": "Many beginners mistakenly believe Git records line-by-line differences (diffs) across files over time. In reality, Git conceptualizes its data as a series of complete **snapshots** of a mini filesystem. Every time you commit, Git takes a picture of what all your files look like at that moment and stores a reference to that snapshot. If a file has not changed, Git does not store it again; it simply links to the previously stored identical blob."
+    },
+    {
+      "id": "ch03_b004",
+      "type": "diagram",
+      "src": "/novels/ai-and-ds-engineering-handbook/figures/fig_1_1.svg",
+      "caption": "The Four Structural Domains of Git.",
+      "alt": "The Four Structural Domains of Git."
+    },
+    {
+      "id": "ch03_b005",
+      "type": "heading",
+      "level": 3,
+      "text": "The Three Core Git Objects",
+      "slug": "the-three-core-git-objects"
+    },
+    {
+      "id": "ch03_b006",
+      "type": "text",
+      "text": "Inside the hidden `.git/objects` directory, Git stores three primary data types addressed by their 40-character SHA-1 (or 64-character SHA-256) hash:"
+    },
+    {
+      "id": "ch03_b007",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• **Blob**: Raw file content (bytes). A blob contains no filename, directory information, or timestamp—only the content.",
+        "• **Tree**: Represents a directory. It points to blobs (files) and other trees (subdirectories), along with their permissions and filenames.",
+        "• **Commit**: An object containing a pointer to the top-level root tree, metadata (author, committer, timestamp, message), and parent commit hash(es)."
+      ]
+    },
+    {
+      "id": "ch03_b008",
+      "type": "heading",
+      "level": 2,
+      "text": "Essential Command Line Workflow",
+      "slug": "essential-command-line-workflow"
+    },
+    {
+      "id": "ch03_b009",
+      "type": "heading",
+      "level": 3,
+      "text": "Initialization and Everyday Cycle",
+      "slug": "initialization-and-everyday-cycle"
+    },
+    {
+      "id": "ch03_b010",
+      "type": "code",
+      "language": "bash",
+      "code": "# Initialize a new Git repository in the current folder\ngit init\n\n# Check the working tree status (untracked, staged, modified)\ngit status\n\n# Stage specific files or all modified files in the working directory\ngit add main.py\ngit add .               # Stages all changes from current directory downward\n\n# Review what changes are staged versus unstaged\ngit diff                # Unstaged modifications\ngit diff --staged       # Staged changes ready to be committed\n\n# Record snapshot with an informative commit message\ngit commit -m \"feat(data): implement initial polars CSV ingestion pipeline\"\n\n# View concise, graphical commit history\ngit log --oneline --graph --decorate --all",
+      "caption": "Initializing and Tracking Projects"
+    },
+    {
+      "id": "ch03_b011",
+      "type": "callout",
+      "variant": "anchor",
+      "title": null,
+      "text": "**The Conventional Commits Standard:**\nHigh-performing engineering teams enforce structured commit messages following the Conventional Commits specification:\n`<type>(<optional scope>): <short description>`\n\\begin{itemize}\n \\item `feat`: A new feature or capability.\n \\item `fix`: A bug fix.\n \\item `docs`: Documentation changes only.\n \\item `refactor`: Code change that neither fixes a bug nor adds a feature.\n \\item `perf`: A code change that improves performance.\n \\item `test`: Adding missing tests or correcting existing tests.\n\\end{itemize}"
+    },
+    {
+      "id": "ch03_b012",
+      "type": "heading",
+      "level": 3,
+      "text": "Branching, Merging, and Conflict Resolution",
+      "slug": "branching-merging-and-conflict-resolution"
+    },
+    {
+      "id": "ch03_b013",
+      "type": "text",
+      "text": "In Git, a **branch** is merely an 8-byte pointer containing the commit hash of its tip. Creating or deleting a branch takes less than one millisecond, regardless of repository size."
+    },
+    {
+      "id": "ch03_b014",
+      "type": "code",
+      "language": "bash",
+      "code": "# Create and switch to a new feature branch\ngit switch -c feature/hand-tracking\n# (Equivalently: git checkout -b feature/hand-tracking)\n\n# List all local branches (* denotes currently checked out)\ngit branch\n\n# Switch back to the primary branch\ngit switch main\n\n# Merge the completed feature branch into main\ngit merge feature/hand-tracking\n\n# Delete feature branch after successful integration\ngit branch -d feature/hand-tracking",
+      "caption": "Branch Creation, Switching, and Merging"
+    },
+    {
+      "id": "ch03_b015",
+      "type": "heading",
+      "level": 4,
+      "text": "Resolving Merge Conflicts",
+      "slug": "resolving-merge-conflicts"
+    },
+    {
+      "id": "ch03_b016",
+      "type": "text",
+      "text": "When two branches modify the same lines of a file, Git halts the merge and injects conflict markers into the offending files:"
+    },
+    {
+      "id": "ch03_b017",
+      "type": "code",
+      "language": "code",
+      "code": "<<<<<<< HEAD (Current Branch: main)\nstd::cout << \"Starting server on port 8080...\" << std::endl;\n=======\nstd::cout << \"Starting high-performance server on port 9000...\" << std::endl;\n>>>>>>> feature/port-configuration",
+      "caption": "Git Merge Conflict Markers"
+    },
+    {
+      "id": "ch03_b018",
+      "type": "text",
+      "text": "To resolve the conflict:"
+    },
+    {
+      "id": "ch03_b019",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• Open the file in an editor (VS Code, Vim).",
+        "• Decide which logic to preserve or synthesize both.",
+        "• Delete the markers (`<<<<<<<`, `=======`, `>>>>>>>`).",
+        "• Stage the resolved file: `git add server.cpp`.",
+        "• Finalize the merge: `git commit -m \"merge: resolve port collision between main and feature\"`."
+      ]
+    },
+    {
+      "id": "ch03_b020",
+      "type": "heading",
+      "level": 2,
+      "text": "Connecting to Remote Repositories and GitHub Profile",
+      "slug": "connecting-to-remote-repositories-and-github-profile"
+    },
+    {
+      "id": "ch03_b021",
+      "type": "text",
+      "text": "To link your local machine to GitHub securely, configure an SSH key:"
+    },
+    {
+      "id": "ch03_b022",
+      "type": "code",
+      "language": "bash",
+      "code": "# Generate modern Ed25519 SSH key pair\nssh-keygen -t ed25519 -C \"ulhas@example.com\"\n\n# Display public key to paste into GitHub Settings -> SSH Keys\ncat ~/.ssh/id_ed25519.pub\n\n# Add remote origin and push branch\ngit remote add origin git@github.com:Ulhas123/ai-perception-engine.git\ngit branch -M main\ngit push -u origin main",
+      "caption": "Generating SSH Keys and Pushing to Remote"
+    },
+    {
+      "id": "ch03_b023",
+      "type": "heading",
+      "level": 3,
+      "text": "Architecting a Professional GitHub Profile (\\texttt{github.com/Ulhas123",
+      "slug": "architecting-a-professional-github-profile-textttgithubcomulhas123"
+    },
+    {
+      "id": "ch03_b024",
+      "type": "text",
+      "text": ")}\nYour GitHub profile is your engineering resume. A 1st-year student whose profile contains clean documentation and well-structured repositories immediately stands out."
+    },
+    {
+      "id": "ch03_b025",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• **Special Profile Repository**: Create a public repository named exactly `Ulhas123` containing a top-level `README.md`. GitHub renders this file on your user home page.",
+        "• **Repository Anatomy**: Every public project must include:\n \\begin{enumerate}",
+        "• `.gitignore`: Exclude virtualenvs (`.venv/`), build artifacts (`*.o`, `build/`), and environment secrets (`.env`).",
+        "• `README.md`: Must have a clear title, badges, architecture diagram or system overview, installation prerequisites, and a quick-start code snippet.",
+        "• `LICENSE`: Choose MIT or Apache 2.0."
+      ]
+    },
+    {
+      "id": "ch03_b026",
+      "type": "text",
+      "text": "\\end{itemize}"
+    },
+    {
+      "id": "ch03_b027",
+      "type": "callout",
+      "variant": "club",
+      "title": null,
+      "text": "**Question**: *“What is the difference between `git merge` and `git rebase`? When should we use which in our club repo?”*\n**Defense**: *“`git merge` creates a new 3-way merge commit that preserves the complete historical topology of when branches diverged and re-joined. `git rebase` rewrites commit history by transplanting local commits one by one on top of the latest upstream commit, creating a clean linear history. In shared public branches (`main`), we avoid rebasing because rewriting public commit hashes breaks other teammates' local trees. For private local feature branches, rebasing keeps history pristine before submitting a Pull Request.”*"
+    },
+    {
+      "id": "ch03_b028",
+      "type": "callout",
+      "variant": "pitfall",
+      "title": null,
+      "text": "**Pitfall: Committing API Keys or 2GB Datasets into Git:**\nGit retains every object committed in `.git/objects` indefinitely, even if you run `git rm secret.env` in the next commit. If pushed to GitHub, automated scanners scrape exposed keys within seconds.\n**Remedy**: Never commit before creating a robust `.gitignore`. If secrets or huge datasets were committed locally, use `git reset –soft HEAD~ 1` to uncommit without losing local code, add the file to `.gitignore`, and recommit."
+    }
+  ],
+  "authorThoughts": "Key takeaway from Version Control, Git Internals, and Team Collaboration: Focus on first principles, mental anchors, and portfolio readiness."
+}

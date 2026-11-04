@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#030712"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="900" fill="url(#bg)"/>
+  <rect x="25" y="25" width="550" height="850" rx="16" fill="none" stroke="#3b82f6" stroke-opacity="0.25" stroke-width="2"/>
+  <circle cx="300" cy="220" r="100" fill="#3b82f6" fill-opacity="0.08"/>
+  <circle cx="300" cy="220" r="60" fill="#8b5cf6" fill-opacity="0.12"/>
+
+  <!-- Badge -->
+  <rect x="180" y="90" width="240" height="34" rx="17" fill="#3b82f6" fill-opacity="0.2" stroke="#3b82f6" stroke-opacity="0.4"/>
+  <text x="300" y="112" font-family="monospace" font-size="12" font-weight="700" letter-spacing="3" fill="#60a5fa" text-anchor="middle">ACADEMIC TEXTBOOK</text>
+
+  <!-- Titles -->
+  <text x="300" y="396" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" letter-spacing="2" fill="#f8fafc" text-anchor="middle">THE FIRST-YEAR AI</text>
+  <text x="300" y="444" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" letter-spacing="2" fill="#f8fafc" text-anchor="middle">&amp; DATA SCIENCE</text>
+  <text x="300" y="492" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" letter-spacing="2" fill="#f8fafc" text-anchor="middle">ENGINEERING</text>
+  <text x="300" y="540" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" letter-spacing="2" fill="url(#accent)" text-anchor="middle">COMPENDIUM</text>
+
+  <!-- Subtitle -->
+  <text x="300" y="650" font-family="system-ui, sans-serif" font-size="14" fill="#94a3b8" text-anchor="middle">A Practical Systems Guide from Pitch to Mastery</text>
+
+  <!-- Author -->
+  <line x1="220" y1="720" x2="380" y2="720" stroke="#334155" stroke-width="1"/>
+  <text x="300" y="760" font-family="system-ui, sans-serif" font-size="15" font-weight="600" letter-spacing="4" fill="#e2e8f0" text-anchor="middle">ULHAS KARANKAR</text>
+  <text x="300" y="790" font-family="system-ui, sans-serif" font-size="11" letter-spacing="2" fill="#64748b" text-anchor="middle">FIRST EDITION • 2026</text>
+</svg>

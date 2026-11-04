@@ -3,6 +3,7 @@ import { useUI } from '../../store/useUI';
 import type { Block } from '../../types/novel';
 import { CalloutRenderer } from './CalloutRenderer';
 import { CodeRenderer } from './CodeRenderer';
+import { InlineText } from './InlineText';
 
 interface BlockRendererProps {
   block: Block;
@@ -35,7 +36,7 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
       case 'text': {
         return (
           <p className="font-[family-name:var(--reader-font)] text-[length:var(--reader-size)] leading-[var(--reader-leading)] text-ink">
-            {block.text}
+            <InlineText text={block.text} />
           </p>
         );
       }
@@ -107,7 +108,7 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
                   <tr>
                     {block.headers.map((h, idx) => (
                       <th key={idx} className="px-4 py-2.5 font-semibold text-ink">
-                        {h}
+                        <InlineText text={h} />
                       </th>
                     ))}
                   </tr>
@@ -118,7 +119,7 @@ const BlockRendererComponent: React.FC<BlockRendererProps> = ({
                   <tr key={rIdx} className="hover:bg-raised/40 transition-colors">
                     {row.map((cell, cIdx) => (
                       <td key={cIdx} className="px-4 py-2">
-                        {cell}
+                        <InlineText text={cell} />
                       </td>
                     ))}
                   </tr>

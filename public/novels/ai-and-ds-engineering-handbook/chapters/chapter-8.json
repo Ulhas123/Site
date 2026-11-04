@@ -1,0 +1,141 @@
+{
+  "id": "chapter-8",
+  "number": 8,
+  "title": "Chapter 8: Full-Stack Web Architectures and Reactive State",
+  "wordCount": 421,
+  "publishedAt": "2026-11-03T00:00:00Z",
+  "translator": "Ulhas Karankar",
+  "editor": "Department of AI & Data Science",
+  "blocks": [
+    {
+      "id": "ch08_b001",
+      "type": "text",
+      "text": "Full-stack web engineering bridges user interfaces with distributed backend computation. In artificial intelligence systems, full-stack architecture is what transforms a local machine learning script into an interactive product accessible by millions of users worldwide. Understanding the client-server paradigm, HTTP protocol semantics, and REST API design is essential for any AI engineer."
+    },
+    {
+      "id": "ch08_b002",
+      "type": "heading",
+      "level": 2,
+      "text": "The Client-Server Paradigm and HTTP Lifecycle",
+      "slug": "the-client-server-paradigm-and-http-lifecycle"
+    },
+    {
+      "id": "ch08_b003",
+      "type": "text",
+      "text": "The web operates on a client-server architecture mediated by the **Hypertext Transfer Protocol (HTTP)** layered over TCP/IP and TLS."
+    },
+    {
+      "id": "ch08_b004",
+      "type": "diagram",
+      "src": "/novels/ai-and-ds-engineering-handbook/figures/fig_1_1.svg",
+      "caption": "The HTTP Client-Server Request-Response Lifecycle.",
+      "alt": "The HTTP Client-Server Request-Response Lifecycle."
+    },
+    {
+      "id": "ch08_b005",
+      "type": "heading",
+      "level": 3,
+      "text": "Anatomy of an HTTP Request and Response",
+      "slug": "anatomy-of-an-http-request-and-response"
+    },
+    {
+      "id": "ch08_b006",
+      "type": "text",
+      "text": "An HTTP exchange consists of plain-text formatted metadata and optional payload bodies:"
+    },
+    {
+      "id": "ch08_b007",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• **Request Methods**:\n \\begin{itemize}",
+        "• `GET`: Retrieve resources (idempotent and safe; no request body).",
+        "• `POST`: Submit new data or trigger computation (non-idempotent).",
+        "• `PUT` / `PATCH`: Replace entirely or modify partially an existing resource.",
+        "• `DELETE`: Remove a resource."
+      ]
+    },
+    {
+      "id": "ch08_b008",
+      "type": "text",
+      "text": "\\item **Status Code Classes**:"
+    },
+    {
+      "id": "ch08_b009",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• `2xx Success`: `200 OK`, `201 Created`.",
+        "• `4xx Client Error`: `400 Bad Request`, `401 Unauthorized`, `404 Not Found`.",
+        "• `5xx Server Error`: `500 Internal Server Error`, `503 Service Unavailable`."
+      ]
+    },
+    {
+      "id": "ch08_b010",
+      "type": "text",
+      "text": "\\end{itemize}"
+    },
+    {
+      "id": "ch08_b011",
+      "type": "heading",
+      "level": 2,
+      "text": "Designing High-Performance Machine Learning REST APIs",
+      "slug": "designing-high-performance-machine-learning-rest-apis"
+    },
+    {
+      "id": "ch08_b012",
+      "type": "text",
+      "text": "In AI and data science applications, the industry standard framework for backend microservices is **FastAPI** (Python). Powered by Starlette, Pydantic, and Uvicorn, FastAPI provides asynchronous concurrency and automatic validation."
+    },
+    {
+      "id": "ch08_b013",
+      "type": "code",
+      "language": "python",
+      "code": "from fastapi import FastAPI, HTTPException, status\nfrom fastapi.middleware.cors import CORSMiddleware\nfrom pydantic import BaseModel, Field\nfrom typing import List, Dict\nimport time\n\napp = FastAPI(\n    title=\"Real-Time Tabular Inference Microservice\",\n    description=\"High-throughput LightGBM prediction API for AI engineering applications\",\n    version=\"1.0.0\"\n)\n\n# Configure Cross-Origin Resource Sharing (CORS)\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"], # In production, restrict to your Cloudflare frontend domain\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\n\n# Strongly-typed input schema with runtime Pydantic validation\nclass InferencePayload(BaseModel):\n    features: List[float] = Field(..., min_length=4, max_length=4, description=\"4 numerical feature vectors\")\n    model_version: str = Field(default=\"v1.0\", description=\"Target model tag\")\n\nclass InferenceResponse(BaseModel):\n    probability: float\n    prediction_label: int\n    latency_ms: float\n\n@app.get(\"/health\", status_code=status.HTTP_200_OK)\nasync def healthcheck() -> Dict[str, str]:\n    return {\"status\": \"HEALTHY\", \"engine\": \"FastAPI + Uvicorn\"}\n\n@app.post(\"/predict\", response_model=InferenceResponse, status_code=status.HTTP_200_OK)\nasync def predict(payload: InferencePayload):\n    start_time = time.perf_counter()\n    \n    try:\n        # Mocking low-latency model inference\n        feature_sum = sum(payload.features)\n        prob = 1.0 / (1.0 + pow(2.71828, -feature_sum)) # Sigmoid activation\n        label = 1 if prob >= 0.5 else 0\n        \n        latency = (time.perf_counter() - start_time) * 1000.0\n        return InferenceResponse(\n            probability=round(prob, 4),\n            prediction_label=label,\n            latency_ms=round(latency, 2)\n        )\n    except Exception as exc:\n        raise HTTPException(\n            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,\n            detail=f\"Inference failure: {str(exc)}\"\n        )",
+      "caption": "Production FastAPI Inference Microservice with Validation"
+    },
+    {
+      "id": "ch08_b014",
+      "type": "heading",
+      "level": 2,
+      "text": "Frontend Integration: Fetching and Rendering Data",
+      "slug": "frontend-integration-fetching-and-rendering-data"
+    },
+    {
+      "id": "ch08_b015",
+      "type": "text",
+      "text": "On the client side, modern JavaScript makes asynchronous requests to the backend using the browser's native `fetch()` API:"
+    },
+    {
+      "id": "ch08_b016",
+      "type": "code",
+      "language": "javascript",
+      "code": "async function sendInferenceRequest(featureArray) {\n  const resultDisplay = document.getElementById(\"prediction-result\");\n  resultDisplay.innerText = \"Computing inference...\";\n\n  try {\n    const res = await fetch(\"http://127.0.0.1:8000/predict\", {\n      method: \"POST\",\n      headers: { \"Content-Type\": \"application/json\" },\n      body: JSON.stringify({ features: featureArray })\n    });\n\n    if (!res.ok) throw new Error(`HTTP error code: ${res.status}`);\n\n    const data = await res.json();\n    resultDisplay.innerHTML = `\n      <strong>Label:</strong> ${data.prediction_label} <br>\n      <strong>Confidence:</strong> ${(data.probability * 100).toFixed(1)}% <br>\n      <strong>Latency:</strong> ${data.latency_ms} ms\n    `;\n  } catch (err) {\n    resultDisplay.innerText = `Network Error: ${err.message}`;\n  }\n}",
+      "caption": "Client-Side Fetch Integration and DOM Update"
+    },
+    {
+      "id": "ch08_b017",
+      "type": "callout",
+      "variant": "anchor",
+      "title": null,
+      "text": "**Statelessness in REST Architecture:**\nOne of the six architectural constraints of REST (Representational State Transfer) is **Statelessness**. The server must not store any client session state between requests. Every single request from client to server must contain all necessary information (authentication tokens, payload, headers) for the server to fulfill the request. This allows backend servers to scale horizontally across multiple Docker containers behind a load balancer with zero session replication overhead!"
+    },
+    {
+      "id": "ch08_b018",
+      "type": "callout",
+      "variant": "club",
+      "title": null,
+      "text": "**Question**: *“What is CORS, and why does my frontend get blocked when calling my local FastAPI server?”*\n**Defense**: *“CORS (Cross-Origin Resource Sharing) is a browser security mechanism that restricts a web page from making requests to a different domain, port, or protocol than the one that served the page. When the browser detects a cross-origin request (e.g. `http://localhost:3000` requesting `http://localhost:8000`), it sends an HTTP `OPTIONS` preflight request asking the server if it permits the cross-origin origin. If the server does not return the header `Access-Control-Allow-Origin`, the browser blocks the response. We resolve this by configuring the CORS middleware in FastAPI to explicitly permit client origins.”*"
+    },
+    {
+      "id": "ch08_b019",
+      "type": "callout",
+      "variant": "pitfall",
+      "title": null,
+      "text": "**Pitfall: Blocking the Async Event Loop in FastAPI:**\nIn FastAPI, declaring an endpoint as `async def` means it runs directly on the single-threaded asyncio event loop. If you execute a CPU-intensive machine learning loop or a synchronous blocking function (like `time.sleep()` or a heavy OpenCV image blur) inside an `async def` endpoint, you will freeze the entire server for all incoming client requests!\n**Remedy**: For CPU-bound tasks, either declare standard `def predict()` (FastAPI automatically runs regular `def` endpoints in a separate thread pool) or use `starlette.concurrency.run_in_threadpool`."
+    }
+  ],
+  "authorThoughts": "Key takeaway from Full-Stack Web Architectures and Reactive State: Focus on first principles, mental anchors, and portfolio readiness."
+}

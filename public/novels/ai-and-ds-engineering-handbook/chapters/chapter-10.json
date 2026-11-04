@@ -1,0 +1,117 @@
+{
+  "id": "chapter-10",
+  "number": 10,
+  "title": "Chapter 10: Desktop Application Engineering with Electron",
+  "wordCount": 342,
+  "publishedAt": "2026-11-03T00:00:00Z",
+  "translator": "Ulhas Karankar",
+  "editor": "Department of AI & Data Science",
+  "blocks": [
+    {
+      "id": "ch10_b001",
+      "type": "text",
+      "text": "Desktop applications provide capabilities that traditional web browsers cannot match: unrestricted access to the local filesystem, direct GPU and hardware camera interfaces, low-latency system-level inter-process communication, and the ability to construct persistent, borderless graphical user interfaces. Through **Electron**, developers utilize web technologies (HTML, CSS, JavaScript) to construct industrial desktop software, including Visual Studio Code, Slack, and custom desktop shells."
+    },
+    {
+      "id": "ch10_b002",
+      "type": "heading",
+      "level": 2,
+      "text": "Electron Architecture: Main Process versus Renderer Process",
+      "slug": "electron-architecture-main-process-versus-renderer-process"
+    },
+    {
+      "id": "ch10_b003",
+      "type": "text",
+      "text": "An Electron application is not a single program; it is a multi-process architecture coupling Google Chromium with Node.js."
+    },
+    {
+      "id": "ch10_b004",
+      "type": "diagram",
+      "src": "/novels/ai-and-ds-engineering-handbook/figures/fig_1_1.svg",
+      "caption": "The Multi-Process Security Architecture of Electron.",
+      "alt": "The Multi-Process Security Architecture of Electron."
+    },
+    {
+      "id": "ch10_b005",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• **Main Process**: Exactly one Main process runs per application. It runs a full Node.js environment with access to OS system calls, window creation, native menus, and tray icons.",
+        "• **Renderer Process**: Each open window is an isolated Chromium renderer running in a sandbox. It renders the graphical UI."
+      ]
+    },
+    {
+      "id": "ch10_b006",
+      "type": "heading",
+      "level": 2,
+      "text": "Secure Inter-Process Communication (IPC)",
+      "slug": "secure-inter-process-communication-ipc"
+    },
+    {
+      "id": "ch10_b007",
+      "type": "text",
+      "text": "In modern Electron, running with `nodeIntegration: true` inside the renderer is a severe security vulnerability. Instead, the secure standard pairs **Context Isolation** with bidirectional IPC via `preload.js`:"
+    },
+    {
+      "id": "ch10_b008",
+      "type": "code",
+      "language": "javascript",
+      "code": "const { app, BrowserWindow, ipcMain } = require('electron');\nconst path = require('path');\nconst os = require('os');\n\nfunction createWindow() {\n  const win = new BrowserWindow({\n    width: 900,\n    height: 600,\n    frame: false,             // Frameless window: eliminates standard OS titlebar\n    transparent: true,         // Allows custom non-rectangular floating UI\n    webPreferences: {\n      preload: path.join(__dirname, 'preload.js'),\n      contextIsolation: true,  // Enforces secure sandbox boundary\n      nodeIntegration: false   // Prevents malicious code execution\n    }\n  });\n\n  win.loadFile('index.html');\n}\n\n// Handle asynchronous IPC invoke from Renderer\nipcMain.handle('system:get-telemetry', async () => {\n  return {\n    cpus: os.cpus().length,\n    freeMemMB: Math.round(os.freemem() / 1024 / 1024),\n    uptimeSeconds: os.uptime()\n  };\n});\n\napp.whenReady().then(createWindow);",
+      "caption": "Main Process: Lifecycle and IPC Handlers (\\texttt{main.js"
+    },
+    {
+      "id": "ch10_b009",
+      "type": "code",
+      "language": "javascript",
+      "code": "const { contextBridge, ipcRenderer } = require('electron');\n\n// Expose safe, selected functions to the window object in Renderer\ncontextBridge.exposeInMainWorld('electronAPI', {\n  getSystemTelemetry: () => ipcRenderer.invoke('system:get-telemetry'),\n  closeApp: () => ipcRenderer.send('window:close')\n});",
+      "caption": "Preload Script: Controlled Bridge (\\texttt{preload.js"
+    },
+    {
+      "id": "ch10_b010",
+      "type": "heading",
+      "level": 2,
+      "text": "Building Custom Desktop Environments",
+      "slug": "building-custom-desktop-environments"
+    },
+    {
+      "id": "ch10_b011",
+      "type": "text",
+      "text": "When developers refer to *“custom desktop environments”* in Electron, they mean overriding native operating system window managers (Win32 Aero / DWM on Windows, or X11/Wayland on Linux) to build bespoke desktop experiences:"
+    },
+    {
+      "id": "ch10_b012",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• **Frameless and Transparent Windows**: Setting `frame: false` and `transparent: true` strips OS chrome, enabling circular widgets, transparent floating HUDs, or floating application docks.",
+        "• **Draggable Regions**: Custom titlebars require CSS styling to tell Chromium where the window can be grabbed and dragged:\n\\begin{lstlisting}[caption={CSS Window Dragging Directives}]\n/* Make custom titlebar draggable across the desktop */\n.custom-titlebar {\n -webkit-app-region: drag;\n user-select: none;\n}\n\n/* Ensure interactive buttons inside titlebar remain clickable */\n.custom-titlebar button {\n -webkit-app-region: no-drag;\n}\n\\end{lstlisting}",
+        "• **Desktop Overlay Docks**: Applications can be pinned to stay above all other OS applications using `win.setAlwaysOnTop(true, 'screen-saver')`, creating real-time telemetry overlays for gaming or AI monitoring.",
+        "• **Subprocess Orchestration**: The Main process can spawn local background Python AI inference engines via `child_process.spawn('python3', ['vision_core.py'])`, piping real-time inference coordinates directly to the frontend canvas at 60 FPS."
+      ]
+    },
+    {
+      "id": "ch10_b013",
+      "type": "callout",
+      "variant": "anchor",
+      "title": null,
+      "text": "**The Chromium-Node Security Boundary:**\nWhy does Electron separate Main and Renderer? If a renderer had direct Node.js access, loading an external web page or an image containing malicious script injection could execute `require('child_process').exec('rm -rf /')`, destroying the user's computer. The Preload Bridge acts as a strict firewall, ensuring that only sanitized, typed data passes across the process boundary."
+    },
+    {
+      "id": "ch10_b014",
+      "type": "callout",
+      "variant": "club",
+      "title": null,
+      "text": "**Question**: *“Isn't Electron bloated and memory-heavy compared to native C++ Qt or WinUI?”*\n**Defense**: *“Electron bundles a Chromium renderer and Node runtime, which does have a memory baseline (typically 80–120MB). However, in modern engineering, Electron provides cross-platform parity across Windows, macOS, and Linux from a single codebase, hardware-accelerated CSS/WebGL rendering, and instant developer velocity. When combined with a C++ or Rust backend via child processes or Node-API native addons, Electron yields the optimal compromise between UI flexibility and raw computational speed.”*"
+    },
+    {
+      "id": "ch10_b015",
+      "type": "callout",
+      "variant": "pitfall",
+      "title": null,
+      "text": "**Pitfall: Blocking the Main Process with Synchronous IPC:**\nNever use `ipcRenderer.sendSync()` or perform heavy CPU processing in the Electron Main process. Because the Main process manages OS window events, blocking its thread freezes window resizing, dragging, minimizing, and OS system tray responsiveness for the entire application. Always use `ipcRenderer.invoke()` with asynchronous handlers."
+    }
+  ],
+  "authorThoughts": "Key takeaway from Desktop Application Engineering with Electron: Focus on first principles, mental anchors, and portfolio readiness."
+}

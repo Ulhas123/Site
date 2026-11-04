@@ -1,0 +1,166 @@
+{
+  "id": "chapter-4",
+  "number": 4,
+  "title": "Chapter 4: Containerization with Docker",
+  "wordCount": 425,
+  "publishedAt": "2026-11-03T00:00:00Z",
+  "translator": "Ulhas Karankar",
+  "editor": "Department of AI & Data Science",
+  "blocks": [
+    {
+      "id": "ch04_b001",
+      "type": "text",
+      "text": "In production software engineering and modern AI engineering, the phrase *“It works on my machine”* is unacceptable. A model trained in Python 3.12 with OpenCV 4.9 on Ubuntu will easily crash if deployed to a server with missing shared C++ libraries (`.so` files) or conflicting Python packages. Docker eliminates this failure mode by encapsulating code, runtimes, system dependencies, configuration, and environment variables into an immutable, portable container."
+    },
+    {
+      "id": "ch04_b002",
+      "type": "heading",
+      "level": 2,
+      "text": "Containers versus Virtual Machines",
+      "slug": "containers-versus-virtual-machines"
+    },
+    {
+      "id": "ch04_b003",
+      "type": "text",
+      "text": "To speak intelligently about Docker, one must understand how containerization differs fundamentally from hardware virtualization."
+    },
+    {
+      "id": "ch04_b004",
+      "type": "diagram",
+      "src": "/novels/ai-and-ds-engineering-handbook/figures/fig_1_1.svg",
+      "caption": "Architectural Comparison: Virtual Machines (left) versus Docker Containers (right).",
+      "alt": "Architectural Comparison: Virtual Machines (left) versus Docker Containers (right)."
+    },
+    {
+      "id": "ch04_b005",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• **Virtual Machines**: A Hypervisor virtualizes the underlying physical hardware. Each VM boots a full-blown **Guest Operating System** with its own kernel, memory footprint (gigabytes), and startup times measured in minutes.",
+        "• **Docker Containers**: Containers share the host operating system kernel directly. Isolation is enforced through two Linux kernel primitives:\n \\begin{enumerate}",
+        "• **Namespaces**: Restrict what a process can *see* (Process IDs, Mount points, Network interfaces, User accounts).",
+        "• **Control Groups (cgroups)**: Restrict what a process can *use* (maximum CPU percentage, RAM allocation, disk I/O bandwidth)."
+      ]
+    },
+    {
+      "id": "ch04_b006",
+      "type": "text",
+      "text": "\\end{itemize}"
+    },
+    {
+      "id": "ch04_b007",
+      "type": "text",
+      "text": "Because containers share the host kernel, they boot in milliseconds, use virtually zero memory overhead for the OS itself, and yield near bare-metal compute performance."
+    },
+    {
+      "id": "ch04_b008",
+      "type": "heading",
+      "level": 2,
+      "text": "Images, Containers, and Registries",
+      "slug": "images-containers-and-registries"
+    },
+    {
+      "id": "ch04_b009",
+      "type": "text",
+      "text": "The Docker ecosystem relies on three foundational entities:"
+    },
+    {
+      "id": "ch04_b010",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• **Docker Image**: A read-only, layered template with instructions for creating a Docker container. Images are constructed using stacked read-only layers (`OverlayFS`).",
+        "• **Docker Container**: A runnable, isolated instance of an image. Starting a container attaches a thin, writable layer on top of the underlying read-only image layers.",
+        "• **Docker Registry**: A centralized repository (such as Docker Hub or GitHub Container Registry) where images are uploaded, versioned with tags, and downloaded."
+      ]
+    },
+    {
+      "id": "ch04_b011",
+      "type": "heading",
+      "level": 2,
+      "text": "Essential Docker Command Reference",
+      "slug": "essential-docker-command-reference"
+    },
+    {
+      "id": "ch04_b012",
+      "type": "code",
+      "language": "bash",
+      "code": "# Pull an image from Docker Hub\ndocker pull python:3.12-slim\n\n# List images stored locally\ndocker images\n\n# Run a container in detached mode (-d), mapping port 8000 host to 8000 container (-p)\n# and naming the running container instance (--name)\ndocker run -d -p 8000:8000 --name ml_server python:3.12-slim\n\n# View running containers (add -a to view stopped containers as well)\ndocker ps\ndocker ps -a\n\n# Inspect real-time standard output / logs from a container\ndocker logs -f ml_server\n\n# Execute an interactive bash shell inside a running container\ndocker exec -it ml_server /bin/bash\n\n# Stop and remove containers\ndocker stop ml_server\ndocker rm ml_server\n\n# Clean up dangling images, unused containers, and build cache\ndocker system prune -f",
+      "caption": "Core Docker Command Line Workflow"
+    },
+    {
+      "id": "ch04_b013",
+      "type": "heading",
+      "level": 2,
+      "text": "Authoring Production-Grade Dockerfiles",
+      "slug": "authoring-production-grade-dockerfiles"
+    },
+    {
+      "id": "ch04_b014",
+      "type": "text",
+      "text": "A `Dockerfile` is a text file containing the sequential instructions used by Docker to build an image."
+    },
+    {
+      "id": "ch04_b015",
+      "type": "callout",
+      "variant": "anchor",
+      "title": null,
+      "text": "**The Layer Caching Golden Rule:**\nDocker executes each instruction in a `Dockerfile` sequentially, caching the resulting filesystem layer. If a line changes, that layer and *all subsequent layers* must be rebuilt from scratch.\n**Crucial Optimization**: Always copy dependency declaration files (`requirements.txt` or `package.json`) and install packages **before** copying your application source code. Application code changes frequently, but dependencies change rarely. Placing `COPY . .` before `pip install` forces Docker to re-download all Python wheels on every single code tweak!"
+    },
+    {
+      "id": "ch04_b016",
+      "type": "code",
+      "language": "docker",
+      "code": "# 1. Base image with minimal Debian footprint\nFROM python:3.12-slim\n\n# 2. Prevent Python from buffering stdout/stderr and writing .pyc files\nENV PYTHONUNBUFFERED=1 \\\n    PYTHONDONTWRITEBYTECODE=1\n\n# 3. Install necessary system C-libraries for OpenCV\nRUN apt-get update && apt-get install -y --no-install-recommends \\\n    libgl1-mesa-glx \\\n    libglib2.0-0 \\\n    && rm -rf /var/lib/apt/lists/*\n\n# 4. Set working directory inside container\nWORKDIR /app\n\n# 5. Copy and install dependencies FIRST to leverage layer caching\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\n\n# 6. Copy remaining project source code\nCOPY . .\n\n# 7. Document the exposed network port\nEXPOSE 8000\n\n# 8. Define default startup command\nCMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]",
+      "caption": "Optimized Production Dockerfile for a Python ML Service"
+    },
+    {
+      "id": "ch04_b017",
+      "type": "heading",
+      "level": 2,
+      "text": "Multi-Container Orchestration with Docker Compose",
+      "slug": "multi-container-orchestration-with-docker-compose"
+    },
+    {
+      "id": "ch04_b018",
+      "type": "text",
+      "text": "Real-world applications are rarely monolithic. An AI application may consist of a Python FastAPI inference server, a web frontend, and a Redis queue. `docker-compose` allows developers to define and launch multi-container stacks with unified virtual networks using a single declarative YAML file."
+    },
+    {
+      "id": "ch04_b019",
+      "type": "code",
+      "language": "code",
+      "code": "version: '3.8'\n\nservices:\n  # Python Machine Learning Inference API\n  inference-api:\n    build:\n      context: .\n      dockerfile: Dockerfile\n    container_name: vision_api\n    ports:\n      - \"8000:8000\"\n    volumes:\n      - ./models:/app/models:ro  # Read-only model weights mount\n    environment:\n      - ENVIRONMENT=production\n      - NUM_THREADS=4\n    restart: unless-stopped\n\n  # Modern Web / UI Frontend Client\n  web-client:\n    image: nginx:alpine\n    container_name: web_ui\n    ports:\n      - \"80:80\"\n    volumes:\n      - ./dist:/usr/share/nginx/html:ro\n    depends_on:\n      - inference-api",
+      "caption": "Multi-Service Orchestration (\\texttt{docker-compose.yml"
+    },
+    {
+      "id": "ch04_b020",
+      "type": "text",
+      "text": "Commands to manage the stack:"
+    },
+    {
+      "id": "ch04_b021",
+      "type": "code",
+      "language": "bash",
+      "code": "# Build, create, and start all services in background\ndocker compose up -d --build\n\n# Inspect status of all services in current project\ndocker compose ps\n\n# View unified, color-coded log streams from all services\ndocker compose logs -f\n\n# Gracefully stop and tear down containers and virtual network\ndocker compose down",
+      "caption": null
+    },
+    {
+      "id": "ch04_b022",
+      "type": "callout",
+      "variant": "club",
+      "title": null,
+      "text": "**Question**: *“Why should we use Docker in our student club project when everyone can just run `pip install -r requirements.txt`?”*\n**Defense**: *“`requirements.txt` only specifies Python packages, not the host operating system C/C++ libraries. MediaPipe and OpenCV require specific versions of `glibc`, `libgl1`, and hardware codec libraries. If teammate A is on macOS M-series, teammate B is on Windows 11, and the deployment target is an Ubuntu cloud node, environment drift causes critical failures. Docker guarantees that everyone develops against the exact same binary environment, eliminating dependency mismatch entirely.”*"
+    },
+    {
+      "id": "ch04_b023",
+      "type": "callout",
+      "variant": "pitfall",
+      "title": null,
+      "text": "**Pitfall: Missing `.dockerignore` File:**\nIf you do not create a `.dockerignore` file in your project root, executing `COPY . .` will copy gigabytes of useless files into your image: the local `.git` folder, large `.venv` folders, and node_modules. This balloons image sizes from 150MB to over 2GB.\n**Always include in `.dockerignore`**:\n`__pycache__`, `*.pyc`, `.git`, `.venv`, `node_modules`, `dist`, `.env`."
+    }
+  ],
+  "authorThoughts": "Key takeaway from Containerization with Docker: Focus on first principles, mental anchors, and portfolio readiness."
+}

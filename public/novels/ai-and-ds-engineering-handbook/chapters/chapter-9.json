@@ -1,0 +1,159 @@
+{
+  "id": "chapter-9",
+  "number": 9,
+  "title": "Chapter 9: Serverless Edge Deployments on Cloudflare Pages",
+  "wordCount": 509,
+  "publishedAt": "2026-11-03T00:00:00Z",
+  "translator": "Ulhas Karankar",
+  "editor": "Department of AI & Data Science",
+  "blocks": [
+    {
+      "id": "ch09_b001",
+      "type": "text",
+      "text": "Deploying modern frontend applications requires more than dumping static HTML on an Apache virtual host. In modern software engineering, web applications are deployed to **Edge Networks**—globally distributed Content Delivery Networks (CDNs) that execute computation and serve assets within single-digit milliseconds of the end user. This chapter explores modern frontend build tooling, edge caching mechanics, and automated CI/CD deployments using **Cloudflare Pages**."
+    },
+    {
+      "id": "ch09_b002",
+      "type": "heading",
+      "level": 2,
+      "text": "Edge Computing, CDNs, and Edge Caching",
+      "slug": "edge-computing-cdns-and-edge-caching"
+    },
+    {
+      "id": "ch09_b003",
+      "type": "text",
+      "text": "Traditional web hosting relies on a centralized origin server (e.g., a server in Northern Virginia, `us-east-1`). A user accessing that application from Indore or Mumbai, India, experiences significant latency due to physical packet transit across undersea fiber cables ($>180$ milliseconds round-trip)."
+    },
+    {
+      "id": "ch09_b004",
+      "type": "diagram",
+      "src": "/novels/ai-and-ds-engineering-handbook/figures/fig_1_1.svg",
+      "caption": "Anycast Routing and Edge Caching Architecture.",
+      "alt": "Anycast Routing and Edge Caching Architecture."
+    },
+    {
+      "id": "ch09_b005",
+      "type": "heading",
+      "level": 3,
+      "text": "Anycast DNS and Edge Points of Presence (PoPs)",
+      "slug": "anycast-dns-and-edge-points-of-presence-pops"
+    },
+    {
+      "id": "ch09_b006",
+      "type": "text",
+      "text": "Cloudflare operates across more than 330 cities worldwide. When a user queries a domain managed by Cloudflare:"
+    },
+    {
+      "id": "ch09_b007",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• **BGP Anycast Routing**: The Domain Name System (DNS) resolves the domain to an identical IP address announced by all 330+ data centers simultaneously. The Internet routing protocol (BGP) directs the user's TCP packets to the physically nearest Point of Presence (PoP).",
+        "• **Edge Caching**: When static JavaScript, CSS, HTML, and images are requested, the edge server returns the cached asset directly from ultra-fast NVMe/RAM storage without contacting the origin server."
+      ]
+    },
+    {
+      "id": "ch09_b008",
+      "type": "heading",
+      "level": 2,
+      "text": "Modern Frontend Tooling: The Vite Build Pipeline",
+      "slug": "modern-frontend-tooling-the-vite-build-pipeline"
+    },
+    {
+      "id": "ch09_b009",
+      "type": "text",
+      "text": "Modern frontend engineering relies on **Vite**, an ultra-fast build tool powered by native browser ES modules and the C-based **esbuild** bundler."
+    },
+    {
+      "id": "ch09_b010",
+      "type": "code",
+      "language": "bash",
+      "code": "# Scaffold modern frontend project with Vite\nnpm create vite@latest ai-dashboard -- --template vanilla-ts\n\ncd ai-dashboard\nnpm install\n\n# Run hot-module replacement (HMR) local development server\nnpm run dev\n\n# Compile and minify for production deployment\nnpm run build",
+      "caption": "Scaffolding and Building a Modern Frontend Application"
+    },
+    {
+      "id": "ch09_b011",
+      "type": "text",
+      "text": "The `npm run build` command performs code-splitting, tree-shaking (removing unused library functions), and generates content-hashed assets inside the `dist/` directory (e.g., `assets/index-a9f3b2.js`). These immutable hashes allow edge servers to cache assets indefinitely."
+    },
+    {
+      "id": "ch09_b012",
+      "type": "heading",
+      "level": 2,
+      "text": "Continuous Deployment with Cloudflare Pages",
+      "slug": "continuous-deployment-with-cloudflare-pages"
+    },
+    {
+      "id": "ch09_b013",
+      "type": "text",
+      "text": "Cloudflare Pages provides automated Git-integrated CI/CD (Continuous Integration / Continuous Deployment)."
+    },
+    {
+      "id": "ch09_b014",
+      "type": "heading",
+      "level": 3,
+      "text": "Git-Driven Automated Build Workflow",
+      "slug": "git-driven-automated-build-workflow"
+    },
+    {
+      "id": "ch09_b015",
+      "type": "callout",
+      "variant": "system",
+      "title": "Key Highlights",
+      "lines": [
+        "• Push your repository to GitHub: `github.com/Ulhas123/ai-dashboard`.",
+        "• In the Cloudflare Dashboard, connect your GitHub account and select the repository.",
+        "• Configure build parameters:\n \\begin{itemize}",
+        "• **Build command**: `npm run build`",
+        "• **Build output directory**: `dist`"
+      ]
+    },
+    {
+      "id": "ch09_b016",
+      "type": "text",
+      "text": "\\item Every commit to `main` triggers an automatic build distributed to Cloudflare's global edge within seconds.\n \\item Every pull request automatically generates an isolated, immutable **Preview URL** for team code reviews.\n\\end{enumerate}"
+    },
+    {
+      "id": "ch09_b017",
+      "type": "heading",
+      "level": 3,
+      "text": "Direct CLI Deployment via Cloudflare Wrangler",
+      "slug": "direct-cli-deployment-via-cloudflare-wrangler"
+    },
+    {
+      "id": "ch09_b018",
+      "type": "text",
+      "text": "You can also deploy local build artifacts directly from the terminal without Git using the **Wrangler CLI**:"
+    },
+    {
+      "id": "ch09_b019",
+      "type": "code",
+      "language": "bash",
+      "code": "# Authenticate Wrangler with Cloudflare account\nnpx wrangler login\n\n# Deploy the production dist folder directly to the edge\nnpx wrangler pages deploy dist --project-name=ai-vision-dashboard",
+      "caption": "Deploying to Cloudflare Pages via Wrangler CLI"
+    },
+    {
+      "id": "ch09_b020",
+      "type": "callout",
+      "variant": "anchor",
+      "title": null,
+      "text": "**The Physics of Edge Latency:**\nSignals in optical fiber propagate at approximately $200,000\\text{ km/s}$ ($\\approx 2/3$ the speed of light in vacuum). A transatlantic data round-trip between India and North America physically cannot occur in less than $120\\text{ ms}$, even ignoring routing router hops and switch contention! By caching frontend assets at edge PoPs in India, you eliminate this physical speed-of-light barrier, providing sub-20ms instant application load times."
+    },
+    {
+      "id": "ch09_b021",
+      "type": "callout",
+      "variant": "club",
+      "title": null,
+      "text": "**Question**: *“Why deploy to Cloudflare Pages instead of hosting our frontend directly on our backend server with `express.static` or FastAPI?”*\n**Defense**: *“Separation of concerns. Serving static frontend assets from a Python or Node backend ties up backend compute threads with static file I/O. Cloudflare Pages offloads static asset delivery to over 330 global edge data centers with free DDoS mitigation, HTTP/3 support, Brotli compression, and automatic edge caching. This leaves our backend compute instances 100% free to execute Python machine learning inference and database transactions.”*"
+    },
+    {
+      "id": "ch09_b022",
+      "type": "callout",
+      "variant": "pitfall",
+      "title": null,
+      "text": "**Pitfall: Single Page Application (SPA) 404 Routing Error:**\nIf you use client-side routers (like React Router) and deploy to Cloudflare Pages, navigating directly to a deep URL like `https://app.pages.dev/dashboard` results in a `404 Not Found` error. This happens because the Cloudflare Edge looks for a physical file named `dashboard.html`.\n**Fix**: Create a `_redirects` file in your `public/` directory:\n\\begin{lstlisting}\n/* /index.html 200\n\\end{lstlisting}\nThis tells the edge server to rewrite all incoming routes to `index.html` with an HTTP 200 status, allowing client-side JavaScript to handle the routing seamlessly!"
+    }
+  ],
+  "authorThoughts": "Key takeaway from Serverless Edge Deployments on Cloudflare Pages: Focus on first principles, mental anchors, and portfolio readiness."
+}

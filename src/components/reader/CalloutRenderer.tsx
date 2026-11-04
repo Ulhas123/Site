@@ -1,6 +1,7 @@
 import React from 'react';
 import { AlertTriangle, BookMarked, CheckCircle2, HelpCircle, Lightbulb, ShieldCheck, Terminal } from 'lucide-react';
 import type { CalloutBlock, CalloutVariant } from '../../types/novel';
+import { InlineText } from './InlineText';
 
 interface CalloutRendererProps {
   block: CalloutBlock;
@@ -119,7 +120,7 @@ export const CalloutRenderer: React.FC<CalloutRendererProps> = ({ block }) => {
 
       {block.text && (
         <div className="font-sans text-xs sm:text-sm text-ink leading-relaxed whitespace-pre-line">
-          {block.text}
+          <InlineText text={block.text} />
         </div>
       )}
 
@@ -127,7 +128,7 @@ export const CalloutRenderer: React.FC<CalloutRendererProps> = ({ block }) => {
         <ul className="space-y-1.5 text-xs sm:text-sm text-ink list-none p-0 m-0 mt-2">
           {block.lines.map((line, idx) => (
             <li key={idx} className="leading-relaxed">
-              {line}
+              <InlineText text={line} />
             </li>
           ))}
         </ul>

@@ -1,0 +1,181 @@
+{
+  "id": "ai-and-ds-engineering-handbook",
+  "title": "The First-Year AI & Data Science Engineering Compendium",
+  "author": "Ulhas Karankar",
+  "synopsis": "A rigorous, first-principles systems engineering compendium covering C++, Python, JavaScript, Linux/WSL2, Docker, Polars, LightGBM, OpenCV, MediaPipe, Electron, and Cloudflare Pages.",
+  "cover": "/novels/ai-and-ds-engineering-handbook/cover.svg",
+  "category": "study",
+  "pdfUrl": "/novels/ai-and-ds-engineering-handbook/handbook.pdf",
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "number": 1,
+      "title": "Preface: From Pitch to Grounded Competence",
+      "wordCount": 203,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Preface: From Pitch to Grounded Competence: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-2",
+      "number": 2,
+      "title": "Chapter 2: Linux Foundations and Windows Subsystem for Linux (WSL2)",
+      "wordCount": 614,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Linux Foundations and Windows Subsystem for Linux (WSL2): Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-3",
+      "number": 3,
+      "title": "Chapter 3: Version Control, Git Internals, and Team Collaboration",
+      "wordCount": 516,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Version Control, Git Internals, and Team Collaboration: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-4",
+      "number": 4,
+      "title": "Chapter 4: Containerization with Docker",
+      "wordCount": 425,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Containerization with Docker: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-5",
+      "number": 5,
+      "title": "Chapter 5: Modern C++ Systems Programming",
+      "wordCount": 465,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Modern C++ Systems Programming: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-6",
+      "number": 6,
+      "title": "Chapter 6: Python Mastery: Memory, Metaclasses, and Concurrency",
+      "wordCount": 519,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Python Mastery: Memory, Metaclasses, and Concurrency: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-7",
+      "number": 7,
+      "title": "Chapter 7: Modern JavaScript and V8 Engine Mechanics",
+      "wordCount": 455,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Modern JavaScript and V8 Engine Mechanics: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-8",
+      "number": 8,
+      "title": "Chapter 8: Full-Stack Web Architectures and Reactive State",
+      "wordCount": 421,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Full-Stack Web Architectures and Reactive State: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-9",
+      "number": 9,
+      "title": "Chapter 9: Serverless Edge Deployments on Cloudflare Pages",
+      "wordCount": 509,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Serverless Edge Deployments on Cloudflare Pages: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-10",
+      "number": 10,
+      "title": "Chapter 10: Desktop Application Engineering with Electron",
+      "wordCount": 342,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Desktop Application Engineering with Electron: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-11",
+      "number": 11,
+      "title": "Chapter 11: High-Throughput Data Engineering with Polars",
+      "wordCount": 394,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from High-Throughput Data Engineering with Polars: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-12",
+      "number": 12,
+      "title": "Chapter 12: Algorithmic Entity Resolution and Deduplication",
+      "wordCount": 500,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Algorithmic Entity Resolution and Deduplication: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-13",
+      "number": 13,
+      "title": "Chapter 13: Gradient Boosted Decision Trees with LightGBM",
+      "wordCount": 387,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Gradient Boosted Decision Trees with LightGBM: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-14",
+      "number": 14,
+      "title": "Chapter 14: Computer Vision and Digital Image Processing with OpenCV",
+      "wordCount": 395,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Computer Vision and Digital Image Processing with OpenCV: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-15",
+      "number": 15,
+      "title": "Chapter 15: Real-Time Perception with Google MediaPipe ML Graphs",
+      "wordCount": 328,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Real-Time Perception with Google MediaPipe ML Graphs: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-16",
+      "number": 16,
+      "title": "Chapter 16: End-to-End Capstone: Perception-to-Edge Pipeline",
+      "wordCount": 341,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from End-to-End Capstone: Perception-to-Edge Pipeline: Focus on first principles, mental anchors, and portfolio readiness."
+    },
+    {
+      "id": "chapter-17",
+      "number": 17,
+      "title": "Chapter 17: Tech Club Survival & Mastery Blueprint",
+      "wordCount": 231,
+      "publishedAt": "2026-11-03T00:00:00Z",
+      "translator": "Ulhas Karankar",
+      "editor": "Department of AI & Data Science",
+      "authorThoughts": "Key takeaway from Tech Club Survival & Mastery Blueprint: Focus on first principles, mental anchors, and portfolio readiness."
+    }
+  ]
+}

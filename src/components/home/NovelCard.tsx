@@ -46,8 +46,14 @@ export const NovelCard: React.FC<NovelCardProps> = ({ novel }) => {
 
         {/* Chapters badge */}
         <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-page/90 backdrop-blur-xs border border-line text-[11px] font-semibold text-ink shadow-xs">
-          <BookOpen className="w-3.5 h-3.5 text-accent" aria-hidden="true" />
-          <span>{novel.totalChapters.toLocaleString()} ch</span>
+          {novel.category === 'study' ? (
+            <span className="text-accent font-mono text-[10px] uppercase font-bold tracking-wider">Textbook</span>
+          ) : (
+            <>
+              <BookOpen className="w-3.5 h-3.5 text-accent" aria-hidden="true" />
+              <span>{novel.totalChapters.toLocaleString()} ch</span>
+            </>
+          )}
         </div>
 
         {/* Progress badge if read */}

@@ -28,12 +28,15 @@ import {
 import { usePrefs } from '../store/usePrefs';
 import { useProgress } from '../store/useProgress';
 import { useUI } from '../store/useUI';
+import { useAuth } from '../store/useAuth';
+import { ProtectedView } from '../components/reader/ProtectedView';
 import type { Novel } from '../types/novel';
 
 export const ReaderPage: React.FC = () => {
   const { novelId = 'shattered-reach', chapterId = 'chapter-1' } = useParams();
   const navigate = useNavigate();
   const [novel, setNovel] = useState<Novel | null>(null);
+  const isAuthenticated = useAuth((s) => s.isAuthenticated);
 
   const activePanel = useUI((s) => s.activePanel);
   const closePanel = useUI((s) => s.closePanel);
@@ -52,12 +55,7 @@ export const ReaderPage: React.FC = () => {
     if (p.get('resume') === '64') {
       const cur = useProgress.getState().getProgress(novelId);
       if (!cur || cur.percent !== 64) {
-        useProgress.getState().saveProgress(novelId, {
-          chapterId: 'chapter-1',
-          blockId: 'ch01_p12',
-          offsetRatio: 0.2,
-          percent: 64,
-        });
+        useProgress.getState().saveProgress(novelId, { chapterId: 'chapter-1', blockId: 'ch01_p12', offsetRatio: 0.2, percent: 64 });
       }
     }
   }
@@ -127,6 +125,10 @@ export const ReaderPage: React.FC = () => {
     if (idx > 0) navigate(`/novel/${novelId}/chapter/${novel!.chapters[idx - 1].id}`);
   }, [novel, currentTargetChapterId, novelId, navigate]);
 
+  if (novel?.category === 'study' && !isAuthenticated) {
+    return <ProtectedView title={novel.title} />;
+  }
+
   return (
     <div className="min-h-screen bg-page text-ink transition-colors duration-150 selection:bg-accent/25 selection:text-ink">
       <Toast message={toastMessage} onDismiss={dismissToast} />
@@ -139,6 +141,7 @@ export const ReaderPage: React.FC = () => {
         chapterId={currentTargetChapterId}
         chapterTitle={activeChapterTitle || 'Loading chapter...'}
         isVisible={isVisible}
+        pdfUrl={novel?.pdfUrl}
       />
 
       {readingMode === 'paginated' ? (
